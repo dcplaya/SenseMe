@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from requests_toolbelt.multipart import decoder
 import json
 from pprint import pprint
+import logging
 
 #For structures
 from collections import namedtuple
@@ -9,6 +10,8 @@ from collections import namedtuple
 #Import Haiku library
 from sensemefan import SenseMeFan
 
+logging.basicConfig(level=logging.INFO)
+log = logging.getLogger(__name__)
 
 # Global values
 	# ip_addr = IP Address, name = Name given to device, model = model of device, series = series of device
@@ -45,11 +48,11 @@ def add_message(uuid):
    player = json_data["Player"]["title"]
    player_uuid = json_data["Player"]["uuid"]
    
-   #print "Event: " + event
-   #print "Username: " + username
-   #print "Server: " + server
-   #print "Player: " + player
-   #print "Player UUID: " + player_uuid
+   log.debug('Event: ' + event)
+   log.debug('Username: ' + username)
+   log.debug('Server: ' + server)
+   log.debug('Player: ' + player)
+   log.debug('Player UUID: ' + player_uuid)
    #print "End!"
   
    # Dim the lights if media is playing or resuming
@@ -57,19 +60,19 @@ def add_message(uuid):
       # Get Light level before diming
 	  #print fan.getlight()
 	  # Converts single quotes to double quotes to make it proper JSON
-	  print "Getting light status/level"
+	  log.info('Getting light status/level')
 	  temp_json = json.dumps(fan.getlight())
 	  temp_json = json.loads(temp_json)
-	  #print temp_json["brightness"]
+	  log.debug('Light Brightness: ' + temp_json["brightness"])
 	  # Store the original values in variables before we start changing stuff
 	  room1_light_level = temp_json["brightness"]
 	  room1_light_status = temp_json["status"]
-	  print "Dimming Lights"
+	  log.info('Dimming Lights to: ' + room1_light_level)
 	
    # Resume the lights if media is stopped or paused
    if ( ( event == 'media.stop' ) or ( event == 'media.pause' ) ) and ( player_uuid == room1_uuid ) :
       # Get Light level
-	  print "Resuming Lights"
+	  log.info('Resuming Lights')
 	  light = fan.getlight()
 	
    return jsonify({"uuid":uuid})
