@@ -8,7 +8,9 @@
 				$(document).ready(function() {
 			
 					$("#driver").click(function(event){
+						$('#deviceList').html('<p> Loading Data...' + '</p>');
 						$.getJSON('devices', function(data) {
+						$('#deviceList').html('<p> Data Successfully Loaded!' + '</p>');
 							for ( var key in data ) {
 								$('#deviceList').append('<p> Name: ' + [key] + '</p>');
 								$('#deviceList').append('<p> IP: ' + data[key].IP + '</p>');
