@@ -11,4 +11,6 @@ def createConfig(path):
 	config['Room1']['Haiku']['Name'] = 'Drew\'s Room Fan'
 	config['Room1']['Haiku']['Model'] = 'FAN'
 	config['Room1']['Haiku']['Series'] = 'LSERIES'
+	# Non Haiku Options
+	config['debug'] = 'INFO'
 	config.write()
