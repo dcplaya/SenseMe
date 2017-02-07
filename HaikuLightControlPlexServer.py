@@ -40,6 +40,12 @@ living_room = haiku_data(ip_addr = config['Room1']['Haiku']['IP'], name = config
 # fan = SenseMeFan('192.168.1.112', 'Living Room Fan')
 fan = SenseMeFan(living_room.ip_addr, living_room.name, living_room.model, living_room.series)
 
+# This below will pull in a list of detected devices to later use
+testfan = SenseMeFan()
+device_list = testfan.get_device_list()
+print 'Living Room Name: ', living_room.name
+print 'Device List:      ', device_list[living_room.name]
+
 app = Flask(__name__)
 
 @app.route('/api/add_message/<uuid>', methods=['GET', 'POST'])
