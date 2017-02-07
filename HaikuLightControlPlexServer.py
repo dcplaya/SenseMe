@@ -3,6 +3,9 @@ from requests_toolbelt.multipart import decoder
 import json
 from pprint import pprint
 import logging
+from ConfigSetup import createConfig
+import configobj
+from pathlib import Path
 
 #For structures
 from collections import namedtuple
@@ -10,17 +13,29 @@ from collections import namedtuple
 #Import Haiku library
 from sensemefan import SenseMeFan
 
+# Logging Level Setup (INFO, DEBUG, WARNING)
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger(__name__)
+
+# Config File Location
+configFilePath = Path("config.ini")
+log.debug(configFilePath)
+# Create config file if one does not exist
+if configFilePath.is_file():
+	log.info('Config File Already Detected')
+	config = configobj.ConfigObj('config.ini')
+else:
+	createConfig("config.ini")
 
 # Global values
 	# ip_addr = IP Address, name = Name given to device, model = model of device, series = series of device
 haiku_data = namedtuple("HaikuData", "ip_addr name model series")
-room1_uuid = '81ba6448-c094-4da2-8cc3-6aa4d003764b'
+room1_uuid = config['Room1']['PlayerUUID']
 room1_light_status = "OFF"
 room1_light_level = 0
 
-living_room = haiku_data(ip_addr = "10.10.1.117", name = "Drew\'s Room Fan", model = "FAN", series = "LSERIES")
+
+living_room = haiku_data(ip_addr = config['Room1']['Haiku']['IP'], name = config['Room1']['Haiku']['Name'], model = config['Room1']['Haiku']['Model'], series = config['Room1']['Haiku']['Series'])
 # Statically assign the fan? Probably not, but you would do it this way:
 # fan = SenseMeFan('192.168.1.112', 'Living Room Fan')
 fan = SenseMeFan(living_room.ip_addr, living_room.name, living_room.model, living_room.series)
@@ -78,4 +93,5 @@ def add_message(uuid):
    return jsonify({"uuid":uuid})
 
 if __name__ == '__main__':
-    app.run(host= '0.0.0.0', port=8088, debug=True)
+	# Run the webserver
+	app.run(host= '0.0.0.0', port=8088, debug=True)

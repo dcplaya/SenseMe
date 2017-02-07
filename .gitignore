@@ -1,0 +1,5 @@
+# Files to never commit to GIT
+config.ini
+
+# File types never to commit to GIT
+*.pyc
