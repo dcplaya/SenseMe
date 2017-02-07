@@ -1,6 +1,34 @@
 <html>
-        <head></head>
+        <head>
+		    <title>The jQuery Example</title>
+			<script type = "text/javascript" 
+				src = "https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+		
+			<script type = "text/javascript" language = "javascript">
+				$(document).ready(function() {
+			
+					$("#driver").click(function(event){
+						$.getJSON('devices', function(data) {
+							for ( var key in data ) {
+								$('#deviceList').append('<p> Name: ' + [key] + '</p>');
+								$('#deviceList').append('<p> IP: ' + data[key].IP + '</p>');
+								$('#deviceList').append('<p> MAC: ' + data[key].MAC + '</p>');
+								$('#deviceList').append('<p> Model: ' + data[key].Model + '</p>');
+								$('#deviceList').append('<p> Series: ' + data[key].Series + '</p>');
+							}
+						});
+					});
+				
+				});
+			</script>
+		</head>
         <body>
+		<p>Click on the button to load list of detected devices:</p>
+		
+		<div id = "deviceList" style = "background-color:#cc0;">
+			Device List
+		</div>
+		<input type = "button" id = "driver" value = "Get Device List" />
             {% with messages = get_flashed_messages() %}
                 {% if messages %}
                     <ul class=flashes>
@@ -25,4 +53,4 @@
 				<li><a href="/fan/decrease">Decrease Speed</a></li>
 			</ul></p>
         </body>
-</html> 
+</html>

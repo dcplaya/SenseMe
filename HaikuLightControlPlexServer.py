@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from requests_toolbelt.multipart import decoder
 import json
 from pprint import pprint
@@ -43,10 +43,29 @@ fan = SenseMeFan(living_room.ip_addr, living_room.name, living_room.model, livin
 # This below will pull in a list of detected devices to later use
 testfan = SenseMeFan()
 device_list = testfan.get_device_list()
-print 'Living Room Name: ', living_room.name
-print 'Device List:      ', device_list[living_room.name]
+print device_list.keys()[0]
+#print 'Living Room Name: ', living_room.name
+#print 'Device List:      ', device_list[living_room.name]
 
 app = Flask(__name__)
+
+@app.route('/', methods=['GET', 'POST'])
+def index():
+	# This below will pull in a list of detected devices to later use
+	testfan = SenseMeFan()
+	device_list = testfan.get_device_list()
+	#print 'Living Room Name: ', living_room.name
+	#print 'Device List:      ', device_list[living_room.name]
+	return render_template('index.html')
+	
+@app.route('/devices', methods=['GET', 'POST'])
+def show_devices():
+	# This below will pull in a list of detected devices to later use
+	testfan = SenseMeFan()
+	device_list = testfan.get_device_list()
+	#print 'Living Room Name: ', living_room.name
+	#print 'Device List:      ', device_list[living_room.name]
+	return jsonify(device_list)
 
 @app.route('/api/add_message/<uuid>', methods=['GET', 'POST'])
 def add_message(uuid):
