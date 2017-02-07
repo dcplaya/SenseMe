@@ -10,12 +10,12 @@ from pathlib import Path
 #For structures
 from collections import namedtuple
 
-#Import Haiku library
-from Haiku.sensemefan import SenseMeFan
-
 # Logging Level Setup (INFO, DEBUG, WARNING)
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger(__name__)
+
+#Import Haiku library
+from Haiku.sensemefan import SenseMeFan
 
 # Config File Location
 configFilePath = Path("config.ini")
