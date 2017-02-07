@@ -44,12 +44,12 @@ class SenseMeFan:
 
         try:
             status = sock.recv(1048).decode('utf-8')
-	    print('Status: ' + status)
+	    #print('Status: ' + status)
         except socket.timeout:
             print('Socket Timed Out')
         else:
             sock.close()
-            print(str(status))
+            #print(str(status))
             matchObj = re.match('\(.*;([^;]+)\)', status)
             if matchObj:
                 return matchObj.group(1)

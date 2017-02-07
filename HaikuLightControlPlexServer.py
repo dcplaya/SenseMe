@@ -11,7 +11,7 @@ from pathlib import Path
 from collections import namedtuple
 
 #Import Haiku library
-from sensemefan import SenseMeFan
+from Haiku.sensemefan import SenseMeFan
 
 # Logging Level Setup (INFO, DEBUG, WARNING)
 logging.basicConfig(level=logging.INFO)
