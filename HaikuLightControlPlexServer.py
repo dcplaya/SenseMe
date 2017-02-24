@@ -41,9 +41,9 @@ living_room = haiku_data(ip_addr = config['Room1']['Haiku']['IP'], name = config
 fan = SenseMeFan(living_room.ip_addr, living_room.name, living_room.model, living_room.series)
 
 # This below will pull in a list of detected devices to later use
-testfan = SenseMeFan()
-device_list = testfan.get_device_list()
-print device_list.keys()[0]
+#testfan = SenseMeFan()
+#device_list = testfan.get_device_list()
+#print device_list.keys()[0]
 #print 'Living Room Name: ', living_room.name
 #print 'Device List:      ', device_list[living_room.name]
 
@@ -52,8 +52,8 @@ app = Flask(__name__)
 @app.route('/', methods=['GET', 'POST'])
 def index():
 	# This below will pull in a list of detected devices to later use
-	testfan = SenseMeFan()
-	device_list = testfan.get_device_list()
+	#testfan = SenseMeFan()
+	#device_list = testfan.get_device_list()
 	#print 'Living Room Name: ', living_room.name
 	#print 'Device List:      ', device_list[living_room.name]
 	return render_template('index.html')
