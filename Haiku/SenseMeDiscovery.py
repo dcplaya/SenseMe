@@ -9,22 +9,13 @@ import socket
 import re
 import time
 
-#device_list = {}                                                                # This is temporary to test, this MUST be deleted
-
 # Class definition starts here!
 class SenseMeDiscovery:
-    device_list = {} 
+    device_list = {}                                                            # Dictionary list of all detected Haiku devices 
     
     def __init__(self):
         self.PORT = 31415                                                       # This is a hard coded port from Haiku
-        self.discover()
-
-        # These are not needed, I dont want to grab this info on discovery
-        #self.light = {'brightness': None, 'status': None}
-        #self.fan = {'speed': None, 'status': None}
-
-        #self.getstate()
-        
+        self.discover()      
         
     def discover(self):                                                         # Discover all devices on the network and return the value eventually
         data = '<ALL;DEVICE;ID;GET>'.encode('utf-8')
@@ -34,8 +25,6 @@ class SenseMeDiscovery:
         s.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
         
         res = s.sendto(data, ('<broadcast>', self.PORT))
-        #print(res)
-        #print('sent broadcast')
 
         p = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         p.setblocking(0)
@@ -65,15 +54,15 @@ class SenseMeDiscovery:
         else:
             
             # Interate through the entire list to parse out the info into a dict
-            for i  in range (0, len(socket_data)):                                        # Loop until it reaches the end of the list
-                m = socket_data[i]                                                        # Put the data into a working variable
+            for i  in range (0, len(socket_data)):                                         # Loop until it reaches the end of the list
+                m = socket_data[i]                                                         # Put the data into a working variable
                 self.details = m[0].decode('utf-8')                                        # Decode/Convert to UTF-8
-                res = re.match('\((.*);DEVICE;ID;(.*);(.*),(.*)\)',self.details)        # Regular expression to parse the info
-                self.name = res.group(1)                                                # Pull the name of the device out of the reg expression
+                res = re.match('\((.*);DEVICE;ID;(.*);(.*),(.*)\)',self.details)           # Regular expression to parse the info
+                self.name = res.group(1)                                                   # Pull the name of the device out of the reg expression
                 self.mac = res.group(2)                                                    # Pull the MAC ID of the device out of the reg expression
-                self.model = res.group(3)                                                # Pull the model of the device out of the reg expression
-                self.series = res.group(4)                                                # Pull the series of the device out of the reg expression
-                self.ip = m[1][0]                                                        # Pull the IP of the device from the 2nd half of the response
+                self.model = res.group(3)                                                  # Pull the model of the device out of the reg expression
+                self.series = res.group(4)                                                 # Pull the series of the device out of the reg expression
+                self.ip = m[1][0]                                                          # Pull the IP of the device from the 2nd half of the response
             
                 # Start storing the info into a dict
                 SenseMeDiscovery.device_list[self.name] = self.name
