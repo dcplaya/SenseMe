@@ -16,6 +16,7 @@ log = logging.getLogger(__name__)
 
 #Import Haiku library
 from Haiku.sensemefan import SenseMeFan
+from Haiku.SenseMeDiscovery import SenseMeDiscovery
 
 # Config File Location
 configFilePath = Path("config.ini")
@@ -38,7 +39,7 @@ room1_light_level = 0
 living_room = haiku_data(ip_addr = config['Room1']['Haiku']['IP'], name = config['Room1']['Haiku']['Name'], model = config['Room1']['Haiku']['Model'], series = config['Room1']['Haiku']['Series'])
 # Statically assign the fan? Probably not, but you would do it this way:
 # fan = SenseMeFan('192.168.1.112', 'Living Room Fan')
-fan = SenseMeFan(living_room.ip_addr, living_room.name, living_room.model, living_room.series)
+#fan = SenseMeFan(living_room.ip_addr, living_room.name, living_room.model, living_room.series)
 
 # This below will pull in a list of detected devices to later use
 #testfan = SenseMeFan()
@@ -61,7 +62,7 @@ def index():
 @app.route('/devices', methods=['GET', 'POST'])
 def show_devices():
 	# This below will pull in a list of detected devices to later use
-	testfan = SenseMeFan()
+	testfan = SenseMeDiscovery()
 	device_list = testfan.get_device_list()
 	#print 'Living Room Name: ', living_room.name
 	#print 'Device List:      ', device_list[living_room.name]

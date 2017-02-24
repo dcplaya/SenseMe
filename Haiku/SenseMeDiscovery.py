@@ -9,8 +9,12 @@ import socket
 import re
 import time
 
+#device_list = {}                                                                # This is temporary to test, this MUST be deleted
+
 # Class definition starts here!
 class SenseMeDiscovery:
+    device_list = {} 
+    
     def __init__(self):
         self.PORT = 31415                                                       # This is a hard coded port from Haiku
         self.discover()
@@ -72,19 +76,20 @@ class SenseMeDiscovery:
                 self.ip = m[1][0]                                                        # Pull the IP of the device from the 2nd half of the response
             
                 # Start storing the info into a dict
-                device_list[self.name] = self.name
-                device_list[self.name] = {}                                                # Needed to initalize a new dict inside of a dict
-                device_list[self.name]["MAC"] = self.mac
-                device_list[self.name]["Model"] = self.model
-                device_list[self.name]["Series"] = self.series
-                device_list[self.name]["IP"] = self.ip
+                SenseMeDiscovery.device_list[self.name] = self.name
+                SenseMeDiscovery.device_list[self.name] = {}                                                # Needed to initalize a new dict inside of a dict
+                SenseMeDiscovery.device_list[self.name]["MAC"] = self.mac
+                SenseMeDiscovery.device_list[self.name]["Model"] = self.model
+                SenseMeDiscovery.device_list[self.name]["Series"] = self.series
+                SenseMeDiscovery.device_list[self.name]["IP"] = self.ip
             # Store all the data in a list
             p.close()    # Closes the open socket
             #print('ip: ' + self.ip)
             #print('details: ' + self.details)
             #print(self.name)
             pass
-            
+   
     def get_device_list(self):
         # Returns a dictionary of all devices detected
-        return device_list
+        return SenseMeDiscovery.device_list
+    
