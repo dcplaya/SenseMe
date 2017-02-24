@@ -17,6 +17,7 @@ log = logging.getLogger(__name__)
 #Import Haiku library
 from Haiku.sensemefan import SenseMeFan
 from Haiku.SenseMeDiscovery import SenseMeDiscovery
+from Haiku.SmartHome import SmartHome
 
 # Config File Location
 configFilePath = Path("config.ini")
@@ -62,11 +63,15 @@ def index():
 @app.route('/devices', methods=['GET', 'POST'])
 def show_devices():
 	# This below will pull in a list of detected devices to later use
-	testfan = SenseMeDiscovery()
-	device_list = testfan.get_device_list()
+	#testfan = SenseMeDiscovery()
+	#device_list = testfan.get_device_list()
+	
+	# Test SmartHome class
+	test = SmartHome()
 	#print 'Living Room Name: ', living_room.name
 	#print 'Device List:      ', device_list[living_room.name]
-	return jsonify(device_list)
+	return jsonify({"uuid":"test"})
+	#return jsonify(device_list)
 
 @app.route('/api/add_message/<uuid>', methods=['GET', 'POST'])
 def add_message(uuid):

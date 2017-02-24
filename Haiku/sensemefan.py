@@ -2,8 +2,6 @@ import socket
 import re
 import time
 
-device_list = {}
-
 '''
 class SenseMeFan:
 This class provides UDP access to Haiku SenseMe capable fans.
@@ -13,25 +11,23 @@ https://github.com/bpennypacker/SenseME-Indigo-Plugin
 
 class SenseMeFan:
 	
-#===============================================================================
-# 	def __init__(self, ip='', name='', model='', series=''):
-# 		self.PORT = 31415
-# 
-# 		if not ip or not name:
-# 			self.discover()
-# 		else:
-# 			self.ip = ip
-# 			self.name = name
-# 			self.mac = ''
-# 			self.details = ''
-# 			self.model = model
-# 			self.series = series
-# 
-# 		self.light = {'brightness': None, 'status': None}
-# 		self.fan = {'speed': None, 'status': None}
-# 
-# 		#self.getstate()
-#===============================================================================
+	def __init__(self, ip, name, model, series):
+		self.PORT = 31415
+		
+		if not ip or not name or not model or not series:
+ 			pass
+ 		else:
+ 			self.ip = ip
+ 			self.name = name
+ 			self.mac = ''
+ 			self.details = ''
+ 			self.model = model
+ 			self.series = series
+
+		self.light = {'brightness': None, 'status': None}
+		self.fan = {'speed': None, 'status': None}
+
+		#self.getstate()
 
 	def __sendcommand__(self, msg):
 		sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
