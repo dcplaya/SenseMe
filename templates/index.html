@@ -6,26 +6,6 @@
             
 			<script type = "text/javascript" 
 				src = "https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-		
-			<script type = "text/javascript" language = "javascript">
-				$(document).ready(function() {
-			
-					$("#driver").click(function(){
-						$('#deviceList').html('<p> Loading Data...' + '</p>');
-						$.getJSON('getdevicelist', function(data) {
-						$('#deviceList').html('<p> Data Successfully Loaded!' + '</p>');
-							for ( var key in data ) {
-								$('#deviceList').append('<p> Name: ' + [key] + '</p>');
-								$('#deviceList').append('<p> IP: ' + data[key].IP + '</p>');
-								$('#deviceList').append('<p> MAC: ' + data[key].MAC + '</p>');
-								$('#deviceList').append('<p> Model: ' + data[key].Model + '</p>');
-								$('#deviceList').append('<p> Series: ' + data[key].Series + '</p>');
-							}
-						});                        
-					});
-				
-				});
-			</script>
 		</head>
         <body>
             <p>
@@ -33,49 +13,55 @@
             <p>Device To Control<ul>
             <!-- Insert drop down menu to select which device to control -->
             <div class="dropdown">
-                <button id="DeviceSelectionButton" type="button" class="dropbtn">Refresh Device List</button>
+                <button id="DeviceSelectionButton" type="button" class="dropbtn" value="Refresh Device List">Refresh Device List</button>
                 <div id="DeviceListSelection" class="dropdown-content">
                     <a href="#">Link 1</a>
                     <!-- list of all detected devices, try and do it dynamically -->
                     <script type = "text/javascript" language = "javascript">
-                        $(document).ready(function() {                          // When page is ready to run javascript
-                            $("#DeviceSelectionButton").click(function(){         // Defines what button to look for on mouse click
-                                $('#deviceList').html('<p> Loading Data...' + '</p>');  
-                                $.getJSON('getdevicelist', function(data) {     // The function/webpage to run when button above is clicked
-                                    var vals = [];
-                                    var $jsontwo = $("#DeviceListSelection");
-                                    $jsontwo.empty();
-                                    var table = document.getElementById("DeviceTable");     // Selects which table by ID
-                                    var i = 0;                                              // Inializes the counter to 0
-                                    var header = table.createTHead();                       // Sets up the header of the columns
-                                    var row = header.insertRow(i);                          // Inserts header row
-                                    var cellName = row.insertCell(i);                       // Inserts the 1st cell
-                                    var cellIP = row.insertCell(i+1);
-                                    var cellModel = row.insertCell(i+2);
-                                    var cellSeries = row.insertCell(i+3);
-                                    var cellMAC = row.insertCell(i+4);
-                                    cellName.innerHTML = "<b>Name</b>";
-                                    cellIP.innerHTML = "<b>IP Address</b>";
-                                    cellModel.innerHTML = "<b>Model</b>";
-                                    cellSeries.innerHTML = "<b>Series</b>";
-                                    cellMAC.innerHTML = "<b>MAC Address</b>";;
-                                    for ( var key in data ) {
+                        $(document).ready(function() {                                                      // When page is ready to run javascript
+                            var table = document.getElementById("DeviceTable");                             // Selects which table by ID
+                            var i = 0;                                                                      // Inializes the counter to 0
+                            var header = table.createTHead();                                               // Sets up the header of the columns
+                            var row = header.insertRow(i);                                                  // Inserts header row
+                            var cellName = row.insertCell(i);                                               // Inserts the 1st cell
+                            var cellIP = row.insertCell(i+1);                                               // Inserts 2nd cell
+                            var cellModel = row.insertCell(i+2);                                            // etc
+                            var cellSeries = row.insertCell(i+3);                   
+                            var cellMAC = row.insertCell(i+4);
+                            cellName.innerHTML = "<b>Name</b>";                                             // Makes the 1st row a bunch of bold text
+                            cellIP.innerHTML = "<b>IP Address</b>";
+                            cellModel.innerHTML = "<b>Model</b>";
+                            cellSeries.innerHTML = "<b>Series</b>";
+                            cellMAC.innerHTML = "<b>MAC Address</b>";;
+                            $("#DeviceSelectionButton").click(function(){                                   // Defines what button to look for on mouse click
+                                // Clear any data still left in table
+                                var table = document.getElementById("DeviceTable");
+                                for ( var i = table.rows.length - 1; i > 0; i-- ) {
+                                    table.deleteRow(i);
+                                }
+                                $('#deviceList').html('<p> Loading Data...' + '</p>');
+                                document.getElementById("DeviceSelectionButton").innerHTML="Loading...";            // Changes button text while loading data        
+                                $.getJSON('getdevicelist', function(data) {                                         // The function/webpage to run when button above is clicked
+
+
+                                    for ( var key in data ) {                                                       // Starts filling in the rest of the table based on the JSON data
                                         row = table.insertRow(i+1);
                                         cellName = row.insertCell(i);
                                         cellIP = row.insertCell(i+1);
-                                        cellModel = row.insertCell(i+1);
-                                        cellSeries = row.insertCell(i+1);
-                                        cellMAC = row.insertCell(i+1);
+                                        cellModel = row.insertCell(i+2);
+                                        cellSeries = row.insertCell(i+3);
+                                        cellMAC = row.insertCell(i+4);
                                         cellName.innerHTML = data[key]["Name"];
                                         cellIP.innerHTML = data[key]["IP"];
                                         cellModel.innerHTML = data[key]["Model"];
                                         cellSeries.innerHTML = data[key]["Series"];
                                         cellMAC.innerHTML = data[key]["MAC"];
                                     }
-                                    //$.each(vals, function(index, value) {
-                                    //    $jsontwo.append("<option>" + value + "</option">);
-                                    //});
+                                    document.getElementById("DeviceSelectionButton").innerHTML="Done Loading!";     // Changes button text while loading data 
                                 });
+                            });
+                            $(document).on('click', '#deviceListTable', function(){
+                                alert('You clicked row '+ ($(this).index()) );
                             });
                         });
                     </script>
