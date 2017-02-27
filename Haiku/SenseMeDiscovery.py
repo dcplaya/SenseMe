@@ -60,8 +60,8 @@ class SenseMeDiscovery:
                 res = re.match('\((.*);DEVICE;ID;(.*);(.*),(.*)\)',self.details)           # Regular expression to parse the info
                 self.name = res.group(1)                                                   # Pull the name of the device out of the reg expression
                 self.mac = res.group(2)                                                    # Pull the MAC ID of the device out of the reg expression
-                self.model = res.group(3)                                                  # Pull the model of the device out of the reg expression
-                self.series = res.group(4)                                                 # Pull the series of the device out of the reg expression
+                self.model = res.group(4)                                                  # Pull the model of the device out of the reg expression
+                self.series = res.group(3)                                                 # Pull the series of the device out of the reg expression
                 self.ip = m[1][0]                                                          # Pull the IP of the device from the 2nd half of the response
             
                 # Start storing the info into a dict

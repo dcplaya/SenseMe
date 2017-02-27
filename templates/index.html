@@ -1,15 +1,18 @@
 <html>
         <head>
 		    <title>Haiku Control Testing</title>
+            <!-- External CSS sheet for this page -->
+            <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='index.css') }}" />
+            
 			<script type = "text/javascript" 
 				src = "https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 		
 			<script type = "text/javascript" language = "javascript">
 				$(document).ready(function() {
 			
-					$("#driver").click(function(event){
+					$("#driver").click(function(){
 						$('#deviceList').html('<p> Loading Data...' + '</p>');
-						$.getJSON('devices', function(data) {
+						$.getJSON('getdevicelist', function(data) {
 						$('#deviceList').html('<p> Data Successfully Loaded!' + '</p>');
 							for ( var key in data ) {
 								$('#deviceList').append('<p> Name: ' + [key] + '</p>');
@@ -18,28 +21,77 @@
 								$('#deviceList').append('<p> Model: ' + data[key].Model + '</p>');
 								$('#deviceList').append('<p> Series: ' + data[key].Series + '</p>');
 							}
-						});
+						});                        
 					});
 				
 				});
 			</script>
 		</head>
         <body>
-		<p>Click on the button to load list of detected devices:</p>
-		
-		<div id = "deviceList" style = "background-color:#cc0;">
-			Device List
-		</div>
-		<input type = "button" id = "driver" value = "Get Device List" />
-            {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                    <ul class=flashes>
-                    {% for message in messages %}
-                        <li>{{ message }}</li>
-                    {% endfor %}
-                    </ul>
-                {% endif %}
-            {% endwith %}
+            <p>
+            <p>
+            <p>Device To Control<ul>
+            <!-- Insert drop down menu to select which device to control -->
+            <div class="dropdown">
+                <button id="DeviceSelectionButton" type="button" class="dropbtn">Refresh Device List</button>
+                <div id="DeviceListSelection" class="dropdown-content">
+                    <a href="#">Link 1</a>
+                    <!-- list of all detected devices, try and do it dynamically -->
+                    <script type = "text/javascript" language = "javascript">
+                        $(document).ready(function() {                          // When page is ready to run javascript
+                            $("#DeviceSelectionButton").click(function(){         // Defines what button to look for on mouse click
+                                $('#deviceList').html('<p> Loading Data...' + '</p>');  
+                                $.getJSON('getdevicelist', function(data) {     // The function/webpage to run when button above is clicked
+                                    var vals = [];
+                                    var $jsontwo = $("#DeviceListSelection");
+                                    $jsontwo.empty();
+                                    var table = document.getElementById("DeviceTable");     // Selects which table by ID
+                                    var i = 0;                                              // Inializes the counter to 0
+                                    var header = table.createTHead();                       // Sets up the header of the columns
+                                    var row = header.insertRow(i);                          // Inserts header row
+                                    var cellName = row.insertCell(i);                       // Inserts the 1st cell
+                                    var cellIP = row.insertCell(i+1);
+                                    var cellModel = row.insertCell(i+2);
+                                    var cellSeries = row.insertCell(i+3);
+                                    var cellMAC = row.insertCell(i+4);
+                                    cellName.innerHTML = "<b>Name</b>";
+                                    cellIP.innerHTML = "<b>IP Address</b>";
+                                    cellModel.innerHTML = "<b>Model</b>";
+                                    cellSeries.innerHTML = "<b>Series</b>";
+                                    cellMAC.innerHTML = "<b>MAC Address</b>";;
+                                    for ( var key in data ) {
+                                        row = table.insertRow(i+1);
+                                        cellName = row.insertCell(i);
+                                        cellIP = row.insertCell(i+1);
+                                        cellModel = row.insertCell(i+1);
+                                        cellSeries = row.insertCell(i+1);
+                                        cellMAC = row.insertCell(i+1);
+                                        cellName.innerHTML = data[key]["Name"];
+                                        cellIP.innerHTML = data[key]["IP"];
+                                        cellModel.innerHTML = data[key]["Model"];
+                                        cellSeries.innerHTML = data[key]["Series"];
+                                        cellMAC.innerHTML = data[key]["MAC"];
+                                    }
+                                    //$.each(vals, function(index, value) {
+                                    //    $jsontwo.append("<option>" + value + "</option">);
+                                    //});
+                                });
+                            });
+                        });
+                    </script>
+                </div>
+            </div>
+            <div class="deviceListTable">
+                <table id="DeviceTable" style="undefined;table-layout: fixed; width: 1000px">
+                <colgroup>
+                <col style="width: 369px">
+                <col style="width: 141px">
+                <col style="width: 124px">
+                <col style="width: 124px">
+                <col style="width: 124px">
+                </colgroup>
+                </table>
+            </div>
             <p>Light<ul>
 				<li><a href="/light/toggle">Toggle Light</a></li>
 				<li><a href="/light/on">Light On</a></li>

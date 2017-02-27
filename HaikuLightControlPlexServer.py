@@ -6,6 +6,7 @@ import logging
 from ConfigSetup import createConfig
 import configobj
 from pathlib import Path
+import os
 
 #For structures
 from collections import namedtuple
@@ -50,6 +51,7 @@ living_room = haiku_data(ip_addr = config['Room1']['Haiku']['IP'], name = config
 #print 'Device List:      ', device_list[living_room.name]
 
 app = Flask(__name__)
+app._static_folder = os.path.abspath("./templates/static")
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -60,9 +62,9 @@ def index():
 	#print 'Device List:      ', device_list[living_room.name]
 	return render_template('index.html')
 	
-@app.route('/devices', methods=['GET', 'POST'])
+@app.route('/getdevicelist', methods=['GET', 'POST'])
 def show_devices():
-	
+	print 'Getting Devices'
 	# SmartHome class
 	home = SmartHome()
 	
