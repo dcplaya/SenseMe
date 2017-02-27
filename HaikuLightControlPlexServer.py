@@ -62,16 +62,12 @@ def index():
 	
 @app.route('/devices', methods=['GET', 'POST'])
 def show_devices():
-	# This below will pull in a list of detected devices to later use
-	#testfan = SenseMeDiscovery()
-	#device_list = testfan.get_device_list()
 	
-	# Test SmartHome class
-	test = SmartHome()
-	#print 'Living Room Name: ', living_room.name
-	#print 'Device List:      ', device_list[living_room.name]
-	return jsonify({"uuid":"test"})
-	#return jsonify(device_list)
+	# SmartHome class
+	home = SmartHome()
+	
+	# Convert list to JSON so its easier to parse on the webpage
+	return jsonify(home.HaikuDevices)
 
 @app.route('/api/add_message/<uuid>', methods=['GET', 'POST'])
 def add_message(uuid):

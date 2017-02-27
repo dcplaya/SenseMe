@@ -44,7 +44,7 @@ class SenseMeDiscovery:
             try:
                 m = p.recvfrom(2048)
                 if m:
-                    print 'Data recevied'
+                    #print 'Data recevied'
                     socket_data.append(m)
             except socket.timeout:
                 killWhile = True
@@ -71,6 +71,7 @@ class SenseMeDiscovery:
                 SenseMeDiscovery.device_list[self.name]["Model"] = self.model
                 SenseMeDiscovery.device_list[self.name]["Series"] = self.series
                 SenseMeDiscovery.device_list[self.name]["IP"] = self.ip
+                SenseMeDiscovery.device_list[self.name]["Name"] = self.name
             # Store all the data in a list
             p.close()    # Closes the open socket
             #print('ip: ' + self.ip)

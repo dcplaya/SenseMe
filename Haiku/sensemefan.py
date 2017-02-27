@@ -11,7 +11,7 @@ https://github.com/bpennypacker/SenseME-Indigo-Plugin
 
 class SenseMeFan:
 	
-	def __init__(self, ip, name, model, series):
+	def __init__(self, ip, name, model, series, mac):
 		self.PORT = 31415
 		
 		if not ip or not name or not model or not series:
@@ -19,13 +19,14 @@ class SenseMeFan:
  		else:
  			self.ip = ip
  			self.name = name
- 			self.mac = ''
+ 			self.mac = mac
  			self.details = ''
  			self.model = model
  			self.series = series
 
 		self.light = {'brightness': None, 'status': None}
 		self.fan = {'speed': None, 'status': None}
+		self.id = {'name': name, 'model': model, 'series': series, 'ip': ip, 'mac': mac}
 
 		#self.getstate()
 
@@ -152,18 +153,20 @@ class SenseMeFan:
 
 	def getlight(self):
 	# Commands for LSERIES fan only 
+		print 'Name: ', self.name
 		if ( self.model == 'FAN' and self.series == 'LSERIES' ):
-			self.light['brightness'] = self.__query__('<%s;LIGHT;LEVEL;GET;ACTUAL>' % self.name)
-			self.light['status'] = self.__query__('<%s;LIGHT;PWR;GET>' % self.name)
+			self.light['brightness'] = self.__query__('<%s;LIGHT;LEVEL;GET;ACTUAL>' % self.mac)
+			self.light['status'] = self.__query__('<%s;LIGHT;PWR;GET>' % self.mac)
 			return self.light
 		else:
 			print('Device Not Supported Yet')
 
 	def getfan(self):
 	# Commands for LSERIES fan only
+		print 'Name: ', self.name
 		if ( self.model == 'FAN' and self.series == 'LSERIES' ):
-			self.fan['speed'] = self.__query__('<%s;FAN;SPD;GET;ACTUAL>' % self.name)
-			self.fan['status'] = self.__query__('<%s;FAN;PWR;GET>' % self.name)
+			self.fan['speed'] = self.__query__('<%s;FAN;SPD;GET;ACTUAL>' % self.mac)
+			self.fan['status'] = self.__query__('<%s;FAN;PWR;GET>' % self.mac)
 			return self.fan
 		else:
 			print('Device Not Supported Yet')
@@ -182,6 +185,9 @@ class SenseMeFan:
 		for x in range(1, 30):
 			m = sock.recvfrom(1024)
 			#print(m)
+		
+	def getid(self):
+		return self.id
 
 #===============================================================================
 # 	def discover(self):

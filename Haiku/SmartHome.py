@@ -13,7 +13,7 @@ class SmartHome:
     
     def __init__(self):
         discover = SenseMeDiscovery()                                           # Create a object of the SenseMeDiscovery class
-        SmartHome.HaikuDevices = discover.get_device_list()                               # Store the list of all devices
+        SmartHome.HaikuDevices = discover.get_device_list()                     # Store the list of all devices
         
         # What I need to do
         # Iterate over the HaikuDevices dictionary to make a new object
@@ -25,15 +25,18 @@ class SmartHome:
 
         # Empty list if it has any data in it at all
         if not ( len(SmartHome.SenseMeDevices) == 0 ):
-            print 'Delete List Length Of: ', len(SmartHome.SenseMeDevices) 
+            #print 'Delete List Length Of: ', len(SmartHome.SenseMeDevices) 
             del SmartHome.SenseMeDevices[:]
             
         # Trying to store a list of SenseMeFan devices....Not sure if this works   
         for key in SmartHome.HaikuDevices:
-            print 'List is empty, store objects'
-            SmartHome.SenseMeDevices.append(SenseMeFan(SmartHome.HaikuDevices[key]["IP"], SmartHome.HaikuDevices[key], SmartHome.HaikuDevices[key]["Model"], SmartHome.HaikuDevices[key]["Series"]))
+            #print 'List is empty, store objects'
+            #print SmartHome.HaikuDevices[key]
+            SmartHome.SenseMeDevices.append(SenseMeFan(SmartHome.HaikuDevices[key]["IP"], SmartHome.HaikuDevices[key]["Name"], SmartHome.HaikuDevices[key]["Model"], SmartHome.HaikuDevices[key]["Series"], SmartHome.HaikuDevices[key]["MAC"]))
             
-            
-        for x in SmartHome.SenseMeDevices:
-            print(SmartHome.SenseMeDevices[x].getstate())
+        #=======================================================================
+        # # Prints the state of each item in the list    
+        # for x in SmartHome.SenseMeDevices:
+        #     print(x.getstate())
+        #=======================================================================
         
