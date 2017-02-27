@@ -32,7 +32,9 @@
                             cellIP.innerHTML = "<b>IP Address</b>";
                             cellModel.innerHTML = "<b>Model</b>";
                             cellSeries.innerHTML = "<b>Series</b>";
-                            cellMAC.innerHTML = "<b>MAC Address</b>";;
+                            cellMAC.innerHTML = "<b>MAC Address</b>";
+                            table.style.border = "thin solid black";
+                            table.style.backgroundColor='#BCD4EC';
                             $("#DeviceSelectionButton").click(function(){                                   // Defines what button to look for on mouse click
                                 // Clear any data still left in table
                                 var table = document.getElementById("DeviceTable");
@@ -56,25 +58,24 @@
                                         cellModel.innerHTML = data[key]["Model"];
                                         cellSeries.innerHTML = data[key]["Series"];
                                         cellMAC.innerHTML = data[key]["MAC"];
+                                        //console.log(cellName.innerHTML);
+                                        deviceName = cellName.innerHTML;
+                                        deviceIP = cellIP.innerHTML;
+                                        deviceModel = cellModel.innerHTML;
+                                        deviceSeries = cellSeries.innerHTML;
+                                        deviceMAC = cellMAC.innerHTML;
+                                        row.setAttribute('onclick', 'saveSelectionOfDevice(deviceName, deviceIP, deviceModel, deviceSeries, deviceMAC);' + onclick );       // Sets the row onclick attribute to pass into the function to save the data
                                     }
-                                    document.getElementById("DeviceSelectionButton").innerHTML="Done Loading!";     // Changes button text while loading data 
+                                    document.getElementById("DeviceSelectionButton").innerHTML="Done Loading!";             // Changes button text while loading data   
                                 });
-                            });
-                            $(document).on('click', '#deviceListTable', function(){
-                                alert('You clicked row '+ ($(this).index()) );
                             });
                         });
                     </script>
                 </div>
             </div>
             <div class="deviceListTable">
-                <table id="DeviceTable" style="undefined;table-layout: fixed; width: 1000px">
+                <table id="DeviceTable">
                 <colgroup>
-                <col style="width: 369px">
-                <col style="width: 141px">
-                <col style="width: 124px">
-                <col style="width: 124px">
-                <col style="width: 124px">
                 </colgroup>
                 </table>
             </div>
@@ -94,3 +95,9 @@
 			</ul></p>
         </body>
 </html>
+<script type = "text/javascript" language = "javascript">
+//This function will be run when a user clicks on a row in the table
+function saveSelectionOfDevice(name, ip, model, series, mac) {
+    console.log("Name: " + name + " / IP: " + ip);
+};
+</script>
