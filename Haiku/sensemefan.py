@@ -154,7 +154,7 @@ class SenseMeFan:
 	def getlight(self):
 	# Commands for LSERIES fan only 
 		print 'Name: ', self.name
-		if ( self.model == 'FAN' and self.series == 'LSERIES' ):
+		if ( self.model == 'FAN' and self.series == 'LSERIES' ) or ( self.model == 'LIGHT' and self.series == 'HAIKU' ):
 			self.light['brightness'] = self.__query__('<%s;LIGHT;LEVEL;GET;ACTUAL>' % self.mac)
 			self.light['status'] = self.__query__('<%s;LIGHT;PWR;GET>' % self.mac)
 			return self.light
