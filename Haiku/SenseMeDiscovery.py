@@ -48,7 +48,16 @@ class SenseMeDiscovery:
                     socket_data.append(m)
             except socket.timeout:
                 killWhile = True
-        if not socket_data[0]:
+        if not socket_data:
+            # Format a empty dictionary
+            self.name = self.mac = self.model = self.series = self.ip = None
+            SenseMeDiscovery.device_list[self.name] = self.name
+            SenseMeDiscovery.device_list[self.name] = {}                                                # Needed to initalize a new dict inside of a dict
+            SenseMeDiscovery.device_list[self.name]["MAC"] = self.mac
+            SenseMeDiscovery.device_list[self.name]["Model"] = self.model
+            SenseMeDiscovery.device_list[self.name]["Series"] = self.series
+            SenseMeDiscovery.device_list[self.name]["IP"] = self.ip
+            SenseMeDiscovery.device_list[self.name]["Name"] = self.name
             p.close()    # Closes the open socket
             pass
         else:
