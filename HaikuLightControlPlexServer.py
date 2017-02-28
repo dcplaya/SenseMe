@@ -64,9 +64,18 @@ def index():
 	
 @app.route('/getdevicelist', methods=['GET', 'POST'])
 def show_devices():
-	print 'Getting Devices'
+	# print 'Getting Devices'
 	# SmartHome class
 	home = SmartHome()
+	
+	# Convert list to JSON so its easier to parse on the webpage
+	return jsonify(home.HaikuDevices)
+
+@app.route('/getdevicestatus', methods=['GET', 'POST'])
+def show_devices():
+
+	# Get the device MAC/Name from the url somehow. Then run a command to get the current status
+	# Finally return the vales in JSON format so I can display it to user on webpage
 	
 	# Convert list to JSON so its easier to parse on the webpage
 	return jsonify(home.HaikuDevices)
