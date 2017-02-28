@@ -159,6 +159,9 @@ class SenseMeFan:
 			self.light['status'] = self.__query__('<%s;LIGHT;PWR;GET>' % self.mac)
 			return self.light
 		else:
+			self.light['brightness'] = None
+			self.light['status'] = None
+			return self.light
 			print('Device Not Supported Yet')
 
 	def getfan(self):
@@ -169,6 +172,9 @@ class SenseMeFan:
 			self.fan['status'] = self.__query__('<%s;FAN;PWR;GET>' % self.mac)
 			return self.fan
 		else:
+			self.fan['speed'] = None
+			self.fan['status'] = None
+			return self.fan
 			print('Device Not Supported Yet')
 
 	def getstate(self):
