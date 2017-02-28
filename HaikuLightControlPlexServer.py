@@ -6,7 +6,6 @@ import logging
 from ConfigSetup import createConfig
 import configobj
 from pathlib import Path
-import os
 
 #For structures
 from collections import namedtuple
@@ -51,7 +50,6 @@ living_room = haiku_data(ip_addr = config['Room1']['Haiku']['IP'], name = config
 #print 'Device List:      ', device_list[living_room.name]
 
 app = Flask(__name__)
-app._static_folder = os.path.abspath("./templates/static")
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -64,18 +62,9 @@ def index():
 	
 @app.route('/getdevicelist', methods=['GET', 'POST'])
 def show_devices():
-	# print 'Getting Devices'
+	
 	# SmartHome class
 	home = SmartHome()
-	
-	# Convert list to JSON so its easier to parse on the webpage
-	return jsonify(home.HaikuDevices)
-
-@app.route('/getdevicestatus', methods=['GET', 'POST'])
-def show_devices():
-
-	# Get the device MAC/Name from the url somehow. Then run a command to get the current status
-	# Finally return the vales in JSON format so I can display it to user on webpage
 	
 	# Convert list to JSON so its easier to parse on the webpage
 	return jsonify(home.HaikuDevices)
