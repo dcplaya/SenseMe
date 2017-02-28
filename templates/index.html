@@ -6,6 +6,8 @@
             
 			<script type = "text/javascript" 
 				src = "https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+			<!-- Loads socketIO library from external source -->
+			<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
 		</head>
         <body>
             <p>
@@ -97,8 +99,19 @@
 </html>
 <script type = "text/javascript" language = "javascript">
 //This function will be run when a user clicks on a row in the table
+
 function saveSelectionOfDevice(name, ip, model, series, mac) {
-    console.log("Name: " + name + " / IP: " + ip);
-    //console.log("Success!");
+    WEB_SOCKET_SWF_LOCATION = "/static/WebSocketMain.swf";
+    WEB_SOCKET_DEBUG = true;
+    socket = io.connect('http://' + document.domain + ':' + location.port);
+    
+    var client_message = "This is a client, I am attempting to communicate";
+    socket.emit("channel-a", client_message);
+    console.log("[x] Sent        : " + client_message);
+    
+    socket.on('channel-a', function(message) {
+        console.log("[x] Received    : " + message);
+    });
+    
 };
 </script>

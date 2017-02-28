@@ -1,3 +1,7 @@
+#!/usr/bin/python
+from gevent import monkey														# Needed before everything else to properly patch things for websockets
+monkey.patch_all()																# Part of the above comment
+
 from flask import Flask, request, jsonify, render_template
 from requests_toolbelt.multipart import decoder
 import json
@@ -122,6 +126,20 @@ def add_message(uuid):
 	  light = fan.getlight()
 	
    return jsonify({"uuid":uuid})
+  
+#===============================================================================
+# Websocket messages. All websocket connections will go below here
+#===============================================================================
+@socketio.on('channel-a')
+def channel_a(message):
+    '''
+    Receives a message, on `channel-a`, and emits to the same channel.
+    '''
+    print "[x] Received\t: ", message
+
+    server_message = "Hi Client, I am the Server."
+    emit("channel-a", server_message)
+    print "[x] Sent\t: ", server_message
 
 if __name__ == '__main__':
 	# Run the webserver
