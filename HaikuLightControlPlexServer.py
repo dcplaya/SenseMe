@@ -7,6 +7,9 @@ from ConfigSetup import createConfig
 import configobj
 from pathlib import Path
 
+# Websockets
+from flask_socketio import SocketIO, emit
+
 #For structures
 from collections import namedtuple
 
@@ -50,6 +53,7 @@ living_room = haiku_data(ip_addr = config['Room1']['Haiku']['IP'], name = config
 #print 'Device List:      ', device_list[living_room.name]
 
 app = Flask(__name__)
+socketio = SocketIO(app)
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -121,4 +125,6 @@ def add_message(uuid):
 
 if __name__ == '__main__':
 	# Run the webserver
-	app.run(host= '0.0.0.0', port=8088, debug=True)
+	app.debug = True
+	socketio.run(app, port=8088, host= '0.0.0.0')
+	
