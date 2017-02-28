@@ -15,7 +15,6 @@
             <div class="dropdown">
                 <button id="DeviceSelectionButton" type="button" class="dropbtn" value="Refresh Device List">Refresh Device List</button>
                 <div id="DeviceListSelection" class="dropdown-content">
-                    <a href="#">Link 1</a>
                     <!-- list of all detected devices, try and do it dynamically -->
                     <script type = "text/javascript" language = "javascript">
                         $(document).ready(function() {                                                      // When page is ready to run javascript
@@ -64,7 +63,8 @@
                                         deviceModel = cellModel.innerHTML;
                                         deviceSeries = cellSeries.innerHTML;
                                         deviceMAC = cellMAC.innerHTML;
-                                        row.setAttribute('onclick', 'saveSelectionOfDevice(deviceName, deviceIP, deviceModel, deviceSeries, deviceMAC);' + onclick );       // Sets the row onclick attribute to pass into the function to save the data
+                                        console.log("Test");
+                                        row.setAttribute('onclick', 'saveSelectionOfDevice("' + deviceName +'", "' + deviceIP + '", "' + deviceModel + '", "' + deviceSeries + '", "' + deviceMAC + '")' );       // Sets the row onclick attribute to pass into the function to save the data
                                     }
                                     document.getElementById("DeviceSelectionButton").innerHTML="Done Loading!";             // Changes button text while loading data   
                                 });
@@ -99,5 +99,6 @@
 //This function will be run when a user clicks on a row in the table
 function saveSelectionOfDevice(name, ip, model, series, mac) {
     console.log("Name: " + name + " / IP: " + ip);
+    //console.log("Success!");
 };
 </script>
