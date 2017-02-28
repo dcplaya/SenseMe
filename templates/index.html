@@ -105,11 +105,12 @@ function saveSelectionOfDevice(name, ip, model, series, mac) {
     WEB_SOCKET_DEBUG = true;
     socket = io.connect('http://' + document.domain + ':' + location.port);
     
-    var client_message = "This is a client, I am attempting to communicate";
-    socket.emit("channel-a", client_message);
-    console.log("[x] Sent        : " + client_message);
+    client_message = JSON.stringify('{"Name":"' + name + '","IP":"' + ip + '","Model":"' + model + '","Series":"' + series + '","MAC":"' + mac + '"}');
+    //client_message = JSON.stringify('{"Name":"'+ name +'","IP":"' + ip + '","Model":"' + model + '","Series":"' + series + '","MAC":"' + mac + '"}'); //, null, "\t"
+    socket.emit("devicestatus", client_message);
+    console.log("[x] Sent: " + client_message);
     
-    socket.on('channel-a', function(message) {
+    socket.on('devicestatus', function(message) {
         console.log("[x] Received    : " + message);
     });
     
