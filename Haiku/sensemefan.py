@@ -154,7 +154,10 @@ class SenseMeFan:
 	def getlight(self):
 	# Commands for LSERIES fan only 
 		print 'Name: ', self.name
-		if ( self.model == 'FAN' and self.series == 'LSERIES' ) or ( self.model == 'LIGHT' and self.series == 'HAIKU' ):
+		if (	( self.model == 'FAN' and self.series == 'LSERIES' ) 
+			 or ( self.model == 'LIGHT' and self.series == 'HAIKU' ) 
+			 or ( self.model == 'FAN,HAIKU' and self.series == 'HSERIES' ) 
+		   ):
 			self.light['brightness'] = self.__query__('<%s;LIGHT;LEVEL;GET;ACTUAL>' % self.mac)
 			self.light['status'] = self.__query__('<%s;LIGHT;PWR;GET>' % self.mac)
 			return self.light
@@ -167,7 +170,9 @@ class SenseMeFan:
 	def getfan(self):
 	# Commands for LSERIES fan only
 		print 'Name: ', self.name
-		if ( self.model == 'FAN' and self.series == 'LSERIES' ):
+		if (	( self.model == 'FAN' and self.series == 'LSERIES' ) 
+			 or ( self.model == 'FAN,HAIKU' and self.series == 'HSERIES' )
+		   ):
 			self.fan['speed'] = self.__query__('<%s;FAN;SPD;GET;ACTUAL>' % self.mac)
 			self.fan['status'] = self.__query__('<%s;FAN;PWR;GET>' % self.mac)
 			return self.fan
