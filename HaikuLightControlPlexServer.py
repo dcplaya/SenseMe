@@ -132,9 +132,11 @@ def add_message(uuid):
 #===============================================================================
 @socketio.on('devicestatus')
 def devicestatus(message):
-    '''
-    Receives a message, on `devicestatus`, and emits to the same channel.
-    '''
+    #===========================================================================
+    # 
+    # Receives a message, on `devicestatus`, and emits to the same channel.
+    # 
+    #===========================================================================
     log.debug("[x] Received\t: " + message)
     json_data = json.loads(message.decode('string-escape').strip('"'))			#Strips out the bad stuff from the string before cnoverting it to JSON object
     log.debug(json_data)
@@ -149,8 +151,15 @@ def devicestatus(message):
     fanStatus = device.getfan()
     lightStatus = device.getlight()
 
-	# Send the resulting data back to the webpage to display it
-    #server_message = lightStatus + fanStatus									# Figure out a way to nest my dictionaries so JSON format will look pretty
+	# Send the resulting data back to the web page to display it    
+    deviceStatus = {}
+    deviceStatus["light"] = lightStatus
+    deviceStatus["fan"] = fanStatus
+    #deviceStatus.update(lightStatus)
+    #deviceStatus.update(fanStatus)
+    pprint(deviceStatus)
+    
+    server_message = deviceStatus									# Figure out a way to nest my dictionaries so JSON format will look pretty
     emit("devicestatus", server_message)
     #log.debug( "[x] Sent\t: " + server_message)
 
