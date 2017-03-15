@@ -83,7 +83,7 @@
             </div>
             <p>Light<ul>
 				<li><a href="/light/toggle">Toggle Light</a></li>
-				<li><a href="/light/on">Light On</a></li>
+				<li><a id="deviceLightOn" href="/light/on" onclick="deviceLightOn(0, 0, 0, 0, 0)">Light On</a></li>
 				<li><a href="/light/off">Light Off</a></li>
 				<li><a href="/light/increase">Increase Light</a></li>
 				<li><a href="/light/decrease">Decrease Light</a></li>
@@ -105,9 +105,6 @@
 //This function will be run when a user clicks on a row in the table
 
 function saveSelectionOfDevice(name, ip, model, series, mac) {
-//    WEB_SOCKET_SWF_LOCATION = "/static/WebSocketMain.swf";
-//    WEB_SOCKET_DEBUG = true;
-//    socket = io.connect('http://' + document.domain + ':' + location.port);
     
     client_message = JSON.stringify('{"Name":"' + name + '","IP":"' + ip + '","Model":"' + model + '","Series":"' + series + '","MAC":"' + mac + '"}');
 
@@ -115,9 +112,38 @@ function saveSelectionOfDevice(name, ip, model, series, mac) {
         socket.emit("devicestatus", client_message);
     //console.log("[x] Sent: " + client_message);
     }, 5000);
+    
+    //Once row is selected, change the onclick values of the device control to send the clicked device properly
+    document.getElementById("deviceLightOn").onclick = deviceLightOn(name, ip, model, series, mac);
         
 };
 </script>
+
+<script type = "text/javascript" language = "javascript">
+//These functions will be run whenever a device control link is clicked
+
+//Wait for page to load
+//window.onload = function() {
+
+    // Get reference to the link of the page with an ID of deviceLightOn
+    //var LightOn = document.getElementById("deviceLightOn");
+    
+    // Set code to run when link is clicked by assigning function ton onclick
+    //LightOn.onclick = 
+
+function deviceLightOn(name, ip, model, series, mac) {
+
+    // Standard JSON format to control devices will be
+    // {MAC: mac, Model: model, Series: series, Light: { Power: on/off, Level: 0-10, Hue: ?? }, Fan: { Power: on/off, Speed: 0-10 }}
+    client_message = JSON.stringify('{"MAC":"' + mac + '","Model":"' + model + '","Series":"' + series + '","Light": { "Power":"ON", "Level":"10", "Hue":"0" }' + ',"Fan": { "Power":"OFF", "Speed":"0"' + '"}');
+    console.log("Device Light On String: ", client_message);
+    // Send request
+    socket.emit("devicecontrol", client_message);
+    
+    return false;                                                               // Makes the browser not redirect the webpage when link is clicked
+};
+</script>
+
 <script type = "text/javascript" language = "javascript">
 // This section will be for javascript that constantly runs once page is loaded, such as device status
 
