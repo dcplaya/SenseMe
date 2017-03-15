@@ -157,11 +157,21 @@ def devicestatus(message):
     deviceStatus["fan"] = fanStatus
     #deviceStatus.update(lightStatus)
     #deviceStatus.update(fanStatus)
-    #pprint(deviceStatus)
+    log.info(deviceStatus)
     
     server_message = deviceStatus									# Figure out a way to nest my dictionaries so JSON format will look pretty
     emit("devicestatus", server_message)
     #log.debug( "[x] Sent\t: " + server_message)
+   
+@socketio.on('devicecontrol')
+def devicecontrol(message):
+    #===========================================================================
+    # 
+    # Receives a message, on `devicecontrol`, and emits to the same channel.
+    # 
+    #===========================================================================
+    log.debug("[x] Received\t: " + message)
+    
 
 if __name__ == '__main__':
 	# Run the webserver
