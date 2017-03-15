@@ -107,7 +107,7 @@ def add_message(uuid):
   
    # Dim the lights if media is playing or resuming
    if ( ( event == 'media.play' ) or ( event == 'media.resume' ) ) and ( player_uuid == room1_uuid ) :
-      # Get Light level before diming
+      # Get Light level before dimming
 	  #print fan.getlight()
 	  # Converts single quotes to double quotes to make it proper JSON
 	  log.info('Getting light status/level')
@@ -157,7 +157,7 @@ def devicestatus(message):
     deviceStatus["fan"] = fanStatus
     #deviceStatus.update(lightStatus)
     #deviceStatus.update(fanStatus)
-    pprint(deviceStatus)
+    #pprint(deviceStatus)
     
     server_message = deviceStatus									# Figure out a way to nest my dictionaries so JSON format will look pretty
     emit("devicestatus", server_message)
