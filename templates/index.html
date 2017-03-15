@@ -96,8 +96,14 @@
 				<li><a href="/fan/decrease">Decrease Speed</a></li>
 			</ul></p>
 		    <div class="deviceStatusGUI">
-			    <h2>Light Status: </h2> <span class="jqLightStatus">Unknown</span>
-			    <h2>Fan Status: </h2> <span class="jqFanStatus">Unknown</span>
+			    <h2>Light Data: </h2><ul> 
+			         <li>Status: <span class="jqLightStatus">Unknown</span></li>
+			         <li>Brightness: <span class="jqLightBrightness">Unknown</span></li>
+			     </ul>
+			    <h2>Fan Data: </h2><ul> 
+			         <li>Status: <span class="jqFanStatus">Unknown</span></li>
+			         <li>Speed: <span class="jqFanSpeed">Unknown</span></li>
+			     </ul>
 			</div>
         </body>
 </html>
@@ -206,9 +212,13 @@ function displayStatus() {
         //console.log("Message Data: " + message.light.status);
         
         var $jqLightStatus = $('.jqLightStatus');                               // Defines a variable and points it to the HTML span class name
+        var $jqLightBrightness = $('.jqLightBrightness');                       // Defines a variable and points it to the HTML span class name
         var $jqFanStatus = $('.jqFanStatus');                                   // Defines a variable and points it to the HTML span class name
+        var $jqFanSpeed = $('.jqFanSpeed');                                     // Defines a variable and points it to the HTML span class name
         $jqLightStatus.html(message.light.status);                              // Overwrites the HTML text with the value of the variable
+        $jqLightBrightness.html(message.light.brightness);                      // Overwrites the HTML text with the value of the variable
         $jqFanStatus.html(message.fan.status);                                  // Overwrites the HTML text with the value of the variable
+        $jqFanSpeed.html(message.fan.speed);                                    // Overwrites the HTML text with the value of the variable
     });
 };
 
