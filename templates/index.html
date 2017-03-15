@@ -95,24 +95,49 @@
 				<li><a href="/fan/increase">Increase Speed</a></li>
 				<li><a href="/fan/decrease">Decrease Speed</a></li>
 			</ul></p>
+		    <div class="deviceStatusGUI">
+			    <h2>Light Status: </h2> <span class="jqLightStatus">Unknown</span>
+			    <h2>Fan Status: </h2> <span class="jqFanStatus">Unknown</span>
+			</div>
         </body>
 </html>
 <script type = "text/javascript" language = "javascript">
 //This function will be run when a user clicks on a row in the table
 
 function saveSelectionOfDevice(name, ip, model, series, mac) {
-    WEB_SOCKET_SWF_LOCATION = "/static/WebSocketMain.swf";
-    WEB_SOCKET_DEBUG = true;
-    socket = io.connect('http://' + document.domain + ':' + location.port);
+//    WEB_SOCKET_SWF_LOCATION = "/static/WebSocketMain.swf";
+//    WEB_SOCKET_DEBUG = true;
+//    socket = io.connect('http://' + document.domain + ':' + location.port);
     
     client_message = JSON.stringify('{"Name":"' + name + '","IP":"' + ip + '","Model":"' + model + '","Series":"' + series + '","MAC":"' + mac + '"}');
-    //client_message = JSON.stringify('{"Name":"'+ name +'","IP":"' + ip + '","Model":"' + model + '","Series":"' + series + '","MAC":"' + mac + '"}'); //, null, "\t"
-    socket.emit("devicestatus", client_message);
-    console.log("[x] Sent: " + client_message);
-    
-    socket.on('devicestatus', function(message) {
-        console.log("[x] Received    : " + message);
-    });
-    
+
+    window.setInterval(function() {
+        socket.emit("devicestatus", client_message);
+    //console.log("[x] Sent: " + client_message);
+    }, 5000);
+        
 };
+</script>
+<script type = "text/javascript" language = "javascript">
+// This section will be for javascript that constantly runs once page is loaded, such as device status
+
+// Set up the receiving of the websocket as soon as possible
+WEB_SOCKET_SWF_LOCATION = "/static/WebSocketMain.swf";
+WEB_SOCKET_DEBUG = true;
+socket = io.connect('http://' + document.domain + ':' + location.port);
+
+function displayStatus() {
+    socket.on('devicestatus', function(message) {
+        //console.log("[x] Received    : " + message);
+        var status = JSON.stringify(message);
+        //console.log("Message Data: " + message.light.status);
+        
+        var $jqLightStatus = $('.jqLightStatus');                               // Defines a variable and points it to the HTML span class name
+        var $jqFanStatus = $('.jqFanStatus');                                   // Defines a variable and points it to the HTML span class name
+        $jqLightStatus.html(message.light.status);                              // Overwrites the HTML text with the value of the variable
+        $jqFanStatus.html(message.fan.status);                                  // Overwrites the HTML text with the value of the variable
+    });
+};
+
+window.onload = displayStatus;
 </script>
