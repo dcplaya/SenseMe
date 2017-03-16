@@ -161,6 +161,9 @@ def devicestatus(message):
     server_message = deviceStatus									
     emit("devicestatus", server_message)
 
+#===============================================================================
+# End devicestatus websocket code
+#===============================================================================
    
 @socketio.on('devicecontrol')
 def devicecontrol(message):
@@ -231,11 +234,11 @@ def devicecontrol(message):
 		log.debug("Light request and status the same, doing nothing")
     elif lightBrightness == "INCREASE":
 		# Send increase command
-		log.debug("Light brightness command sent to: " + name)
+		log.debug("Light brightness increase command sent to: " + name)
 		device.inclight()
     elif lightBrightness == "DECREASE":
 		# Send decrease command
-		log.debug("Light brightness command sent to: " + name)
+		log.debug("Light brightness decrease command sent to: " + name)
 		device.declight()
     elif lightBrightness =="":
     	# No command for light brightness, do nothing
@@ -259,8 +262,33 @@ def devicecontrol(message):
 		# Send off command
 		log.debug("Fan OFF command sent to: " + name)
 		device.fanoff()
+    elif fanPower == "TOGGLE":
+		# Send off command
+		log.debug("Fan TOGGLE command sent to: " + name)
+		device.fantoggle()
+		
+    if currentFanSpeed == fanSpeed:
+		# Do nothing
+		log.debug("Fan request and status the same, doing nothing")
+    elif fanSpeed == "INCREASE":
+		# Send increase command
+		log.debug("Fan speed increase command sent to: " + name)
+		device.incspeed()
+    elif fanSpeed == "DECREASE":
+		# Send decrease command
+		log.debug("Light brightness decrease command sent to: " + name)
+		device.decspeed()
+    elif fanSpeed =="":
+		# No command for light brightness, do nothing
+		log.debug("Fan speed command missing, doing nothing")
+    else:
+		# Send command to set brightness exactly
+		log.debug("Fan speed set to " + fanSpeed + " for " + name)
+		device.setspeed(fanSpeed)
 	
-    
+#===============================================================================
+# End devicecontrol websocket code
+#===============================================================================
 
 if __name__ == '__main__':
 	# Run the webserver

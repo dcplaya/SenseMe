@@ -62,7 +62,10 @@ class SenseMeFan:
 		elif speed < 0: # 0 also sets fan to off automatically
 			speed = 0
 	# Commands for LSERIES fan only
-		if ( self.model == 'FAN' and self.series == 'LSERIES' ):
+		if (	( self.model == 'FAN' and self.series == 'LSERIES' ) 
+			 or ( self.model == 'LIGHT' and self.series == 'HAIKU' ) 
+			 or ( self.model == 'FAN,HAIKU' and self.series == 'HSERIES' ) 
+		   ):
 			self.__sendcommand__('<%s;FAN;SPD;SET;%s>' % (self.name, speed))
 			return
 		else:
@@ -117,16 +120,20 @@ class SenseMeFan:
 			print('Device Not Supported Yet')
 
 	def fanoff(self):
-	# Commands for LSERIES fan only
-		if ( self.model == 'FAN' and self.series == 'LSERIES' ):	
+		if (	( self.model == 'FAN' and self.series == 'LSERIES' ) 
+			 or ( self.model == 'LIGHT' and self.series == 'HAIKU' ) 
+			 or ( self.model == 'FAN,HAIKU' and self.series == 'HSERIES' ) 
+		   ):	
 			self.__sendcommand__('<%s;FAN;PWR;OFF>' % self.name)
 			return
 		else:
 			print('Device Not Supported Yet')
 	
 	def fanon(self):
-	# Commands for LSERIES fan only
-		if ( self.model == 'FAN' and self.series == 'LSERIES' ):
+		if (	( self.model == 'FAN' and self.series == 'LSERIES' ) 
+			 or ( self.model == 'LIGHT' and self.series == 'HAIKU' ) 
+			 or ( self.model == 'FAN,HAIKU' and self.series == 'HSERIES' ) 
+		   ):
 			self.__sendcommand__('<%s;FAN;PWR;ON>' % self.name)
 			return
 		else:
@@ -164,19 +171,14 @@ class SenseMeFan:
 			print('Device Not Supported Yet')
 
 	def lighttoggle(self):
-		if (	( self.model == 'FAN' and self.series == 'LSERIES' ) 
-			 or ( self.model == 'LIGHT' and self.series == 'HAIKU' ) 
-			 or ( self.model == 'FAN,HAIKU' and self.series == 'HSERIES' ) 
-		   ):
-			self.getlight()
-			if self.light['status'] == 'ON':
-				self.lightoff()
-				return 'OFF'
-			else:
-				self.lighton()
-				return 'ON'
+		self.getlight()
+		if self.light['status'] == 'ON':
+			self.lightoff()
+			return 'OFF'
 		else:
-			print('Device Not Supported Yet')
+			self.lighton()
+			return 'ON'
+
 
 	def getlight(self):
 	# Commands for LSERIES fan only 
