@@ -1,55 +1,26 @@
-# SenseMe
-Python Library for Haiku SenseMe app controlled fans/lights
+# SenseMe Web app
+Python webpage for Haiku SenseMe devices controlled fans/lights
 
-This library is useful to control Haiku SenseMe fans with light kits. I would expect it will probably also work with their lights.
+The end result of this will be to run this web app to allow direct control via webpage to all detected devices and show the status of the devices.
 
-It might also be useful for controlling DIY projects as the protocol is very simple and would be easy to clone. And, if you were to use their API the Android and iOS apps may work to control DIY devices. A suggested idea would be to add an Arduino or Raspberry Pi and a relay or two to your own fan and use this or the Haiku Home app to control them.
 
-Sample usage is found in run.py
 
-Going forward, I expect to work this in with Flask to put on a VM to control the fan from a webpage on my phone or desktop. 
+Things people can help with (Or future improvements I want to make)
+0) Set up the python libraries correctly so they are easily installed with 1 command
+1) A way to open a port and monitor it for all BROADCAST messages so I do not have to constantly spam devices for their status
+2) Store all detected devices in a database and update that database when the refresh button is pushed on webpage. This will hopefully get around the fact that many times not all devices are detected
+3) Integrate a page to setup control of Plex and the lights. Prelim stuff is there, I just need to finish it
+4) Change the webpage over to show all devices and the status (once 1 and 2 are complete)
+5) Allow user to manually enter IP/MAC of device and have the app go out and pull the remaining info it needs from the device, then store this in the database
+6) Sniff more commands such as hue of the lights, motion settings and more
+7) Log data, fan/light status, motion detection, temperature, and whatever else I can grab. Store this in a database too so I can look at histories
 
-Sniffing the packets and documenting the protocol were the work of Bruce at http://bruce.pennypacker.org/tag/senseme-plugin/. Much of the code was based on his work on making an Indigo plugin for this fan: https://github.com/bpennypacker/SenseME-Indigo-Plugin
+See the README under the Haiku folder for more info on where I got the original library
 
-I'm new to Python, so there are probably poor coding standards in places, I'm sorry for that.
+I'm new to Python/Javascript/HTML, so there are probably poor coding standards in places, I'm sorry for that.
+
+This is in no way affiliated with Haiku/BigAssFans
 
 ## Usage
   
-    from sensemefan import SenseMeFan
-    def main():
-    # Statically assign the fan? Probably not, but you would do it this way.
-    # fan = SenseMeFan('192.168.1.112', 'Living Room Fan')
-    
-    # Create the fan object and discover the fan
-    fan = SenseMeFan()
-
-    # Turn the light off
-    # fan.lightoff()
-    
-    # Get the light level
-    # light = fan.getlight()
-    # print(light)
-
-    # Get the fan speed
-    # motor = fan.getfan()
-    # print(motor)
-
-    # Toggle light on/off
-    # fan.lighttoggle()
-
-    # want an increasing light effect? Do this.
-    # But, really, probably don't, I don't think they intended strobe effects.
-    # I'm not responsible if you make a strobe light and break the fan or worse
-    # for intensity in range(1,16):
-    #   fan.setlight(intensity)
-    #   time.sleep(1)
-
-    # increase the light level by 2 levels
-    # fan.inclight(2)
-
-    # listen for broadcasts, useful for debugging, wouldn't suggest using it for anything else
-    # fan.listen()
-
-    return
-
-    main()
+   Need to put usage here. Right now just run the HaikuLightControlPlexServer.py
