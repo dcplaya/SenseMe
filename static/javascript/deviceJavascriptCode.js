@@ -40,7 +40,7 @@ function deviceLightToggle(name, ip, model, series, mac) {
 
     // Standard JSON format to control devices will be
     // {MAC: mac, Model: model, Series: series, Light: { Power: on/off/toggle, Level: 0-10, Hue: ?? }, Fan: { Power: on/off/toggle, Speed: 0-10 }}
-    client_message = JSON.stringify('{"MAC":"' + mac + '","Model":"' + model + '","Series":"' + series + '","Light": { "Power":"TOGGLE", "Level":"10", "Hue":"0" }' + ',"Fan": { "Power":"OFF", "Speed":"0"' + '"}');
+    client_message = JSON.stringify('{"MAC":"' + mac + '","Model":"' + model + '","Series":"' + series + '","Light": {"Power":"TOGGLE", "Level":"10", "Hue":"0" }' + ',"Fan": {"Power":"OFF", "Speed":"0"' + '}');
     console.log("Device Light On String: ", client_message);
     // Send request
     socket.emit("devicecontrol", client_message);
@@ -52,7 +52,7 @@ function deviceLightOn(name, ip, model, series, mac) {
 
     // Standard JSON format to control devices will be
     // {MAC: mac, Model: model, Series: series, Light: { Power: on/off/toggle, Level: 0-10, Hue: ?? }, Fan: { Power: on/off/toggle, Speed: 0-10 }}
-    client_message = JSON.stringify('{"MAC":"' + mac + '","Model":"' + model + '","Series":"' + series + '","Light": { "Power":"ON", "Level":"10", "Hue":"0" }' + ',"Fan": { "Power":"OFF", "Speed":"0"' + '"}');
+    client_message = JSON.stringify('{"MAC":"' + mac + '","Model":"' + model + '","Series":"' + series + '","Light": {"Power":"ON", "Level":"10", "Hue":"0" }' + ',"Fan": {"Power":"OFF", "Speed":"0"' + '}');
     console.log("Device Light On String: ", client_message);
     // Send request
     socket.emit("devicecontrol", client_message);
@@ -64,7 +64,7 @@ function deviceLightOff(name, ip, model, series, mac) {
 
     // Standard JSON format to control devices will be
     // {MAC: mac, Model: model, Series: series, Light: { Power: on/off/toggle, Level: 0-10, Hue: ?? }, Fan: { Power: on/off/toggle, Speed: 0-10 }}
-    client_message = JSON.stringify('{"MAC":"' + mac + '","Model":"' + model + '","Series":"' + series + '","Light": { "Power":"OFF", "Level":"10", "Hue":"0" }' + ',"Fan": { "Power":"OFF", "Speed":"0"' + '"}');
+    client_message = JSON.stringify('{"MAC":"' + mac + '","Model":"' + model + '","Series":"' + series + '","Light": {"Power":"OFF", "Level":"10", "Hue":"0" }' + ',"Fan": {"Power":"OFF", "Speed":"0"' + '}');
     console.log("Device Light On String: ", client_message);
     // Send request
     socket.emit("devicecontrol", client_message);
@@ -76,7 +76,7 @@ function deviceLightIncrease(name, ip, model, series, mac) {
 
     // Standard JSON format to control devices will be
     // {MAC: mac, Model: model, Series: series, Light: { Power: on/off/toggle, Level: 0-10, Hue: ?? }, Fan: { Power: on/off/toggle, Speed: 0-10 }}
-    //client_message = JSON.stringify('{"MAC":"' + mac + '","Model":"' + model + '","Series":"' + series + '","Light": { "Power":"OFF", "Level":"10", "Hue":"0" }' + ',"Fan": { "Power":"OFF", "Speed":"0"' + '"}');
+    //client_message = JSON.stringify('{"MAC":"' + mac + '","Model":"' + model + '","Series":"' + series + '","Light": {"Power":"OFF", "Level":"10", "Hue":"0" }' + ',"Fan": {"Power":"OFF", "Speed":"0"' + '}');
     console.log("Not Yet Implemented");
     // Send request
     socket.emit("devicecontrol", client_message);
@@ -88,7 +88,7 @@ function deviceLightDecrease(name, ip, model, series, mac) {
 
     // Standard JSON format to control devices will be
     // {MAC: mac, Model: model, Series: series, Light: { Power: on/off/toggle, Level: 0-10, Hue: ?? }, Fan: { Power: on/off/toggle, Speed: 0-10 }}
-    //client_message = JSON.stringify('{"MAC":"' + mac + '","Model":"' + model + '","Series":"' + series + '","Light": { "Power":"OFF", "Level":"10", "Hue":"0" }' + ',"Fan": { "Power":"OFF", "Speed":"0"' + '"}');
+    //client_message = JSON.stringify('{"MAC":"' + mac + '","Model":"' + model + '","Series":"' + series + '","Light": {"Power":"OFF", "Level":"10", "Hue":"0" }' + ',"Fan": {"Power":"OFF", "Speed":"0"' + '}');
     console.log("Not Yet Implemented");
     // Send request
     socket.emit("devicecontrol", client_message);
