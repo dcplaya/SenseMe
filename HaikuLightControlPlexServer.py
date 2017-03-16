@@ -139,7 +139,7 @@ def devicestatus(message):
     #===========================================================================
     log.debug("[x] Received\t: " + message)
     json_data = json.loads(message.decode('string-escape').strip('"'))			#Strips out the bad stuff from the string before cnoverting it to JSON object
-    log.debug(json_data)
+    log.debug("Device Status JSON Data: ", json_data)
     name = json_data['Name']													# Grabs all the values from the JSON file
     ip = json_data['IP']
     series = json_data['Series']
@@ -155,13 +155,12 @@ def devicestatus(message):
     deviceStatus = {}
     deviceStatus["light"] = lightStatus
     deviceStatus["fan"] = fanStatus
-    #deviceStatus.update(lightStatus)
-    #deviceStatus.update(fanStatus)
-    log.info(deviceStatus)
+
+    log.info("Device Status Reported: " + str(deviceStatus))
     
-    server_message = deviceStatus									# Figure out a way to nest my dictionaries so JSON format will look pretty
+    server_message = deviceStatus									
     emit("devicestatus", server_message)
-    #log.debug( "[x] Sent\t: " + server_message)
+
    
 @socketio.on('devicecontrol')
 def devicecontrol(message):
@@ -169,12 +168,102 @@ def devicecontrol(message):
     # 
     # Receives a message, on `devicecontrol`, and emits to the same channel.
     # 
-    #===========================================================================
+    #==========================================================================
     log.debug("[x] Received\t: " + message)
+    json_data = json.loads(message.decode('string-escape').strip('"'))			#Strips out the bad stuff from the string before cnoverting it to JSON object
+    log.debug("Device Control JSON Data: ", json_data)
+    mac = str(json_data['MAC'])													# Grabs all the values from the JSON file
+    model = str(json_data['Model'])
+    series = str(json_data['Series'])
+    name = str(json_data['Name'])
+    ip = str(json_data['IP'])
+    lightPower = str(json_data['Light']['Power'])
+    lightBrightness = str(json_data['Light']['Brightness'])
+    lightHue = str(json_data['Light']['Hue'])
+    fanPower = str(json_data['Fan']['Power'])
+    fanSpeed = str(json_data['Fan']['Speed'])
+    	
+	#===========================================================================
+	# The following needs to happen
+	# 1) Get current status of devicecontrol
+	# 2) Store status
+	# 3) Compare status with request
+	# 4) Send request if current status is different
+	#===========================================================================
+
+	# 1) Get the current status
+    device = SenseMeFan(ip, name, model, series, mac)							
+    currentFanStatus = device.getfan()
+    currentLightStatus = device.getlight()
+ 
+ 	# 2) Store the status	
+    currentLightPower = str(currentLightStatus["status"])
+    currentLightBrightness = str(currentLightStatus["brightness"])
+    currentFanPower = str(currentFanStatus["status"])
+    currentFanSpeed = str(currentFanStatus["speed"])
+    
+    # 3) Compare status with request
+    #===========================================================================
+    # Light Controls
+    #===========================================================================
+    if currentLightPower == lightPower:
+    	# Do nothing
+    	log.debug("Light request and status the same, doing nothing")
+    elif lightPower == "ON":
+		# Send on command
+		log.debug("Light ON command sent to: ", name)
+		device.lighton()
+    elif lightPower == "OFF":
+		# Send off command
+		log.debug("Light OFF command sent to: ", name)
+		device.lightoff()
+    elif lightPower == "TOGGLE":
+		# Send toggle command
+		log.debug("Light TOGGLE command sent to: ", name)
+		device.lighttoggle()
+    elif lightPower == "":
+		# No command to turn on the light, doing nothing
+		log.debug("Light control command missing, doing nothing")
+	
+
+    if currentLightBrightness == lightBrightness:
+		# Do nothing
+		log.debug("Light request and status the same, doing nothing")
+    elif lightBrightness == "INCREASE":
+		# Send increase command
+		log.debug("Light brightness command sent to: " + name)
+		device.inclight()
+    elif lightBrightness == "DECREASE":
+		# Send decrease command
+		log.debug("Light brightness command sent to: " + name)
+		device.declight()
+    elif lightBrightness =="":
+    	# No command for light brightness, do nothing
+    	log.debug("Light brightness command missing, doing nothing")
+    else:
+		# Send command to set brightness exactly
+		log.debug("Light brightness set to " + lightBrightness + " for " + name)
+		device.setlight(lightBrightness)
+	
+	#===========================================================================
+	# Fan Controls	
+	#===========================================================================
+    if currentFanPower == fanPower:
+		# Do nothing
+		log.debug("Fan request and status the same, doing nothing")
+    elif fanPower == "ON":
+		# Send on command
+		log.debug("Fan ON command sent to: " + name)
+		device.fanon()
+    elif fanPower == "OFF":
+		# Send off command
+		log.debug("Fan OFF command sent to: " + name)
+		device.fanoff()
+	
     
 
 if __name__ == '__main__':
 	# Run the webserver
-	app.debug = True
+	app.debug = False
 	socketio.run(app, port=8088, host= '0.0.0.0')
 	

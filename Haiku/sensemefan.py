@@ -85,21 +85,36 @@ class SenseMeFan:
 		elif light < 0: # light 0 also automatically sets pwr = off
 			light = 0
 	# Commands for LSERIES fan only
-		if ( self.model == 'FAN' and self.series == 'LSERIES' ):
+		if (	( self.model == 'FAN' and self.series == 'LSERIES' ) 
+			 or ( self.model == 'LIGHT' and self.series == 'HAIKU' ) 
+			 or ( self.model == 'FAN,HAIKU' and self.series == 'HSERIES' ) 
+		   ):
 			self.__sendcommand__('<%s;LIGHT;LEVEL;SET;%s>' % (self.name, light))
 			return
 		else:
 			print('Device Not Supported Yet')
 
 	def inclight(self, incbright = 1):
-		self.getlight()
-		self.setlight(int(self.light['brightness']) + incbright)
-		return
+		if (	( self.model == 'FAN' and self.series == 'LSERIES' ) 
+			 or ( self.model == 'LIGHT' and self.series == 'HAIKU' ) 
+			 or ( self.model == 'FAN,HAIKU' and self.series == 'HSERIES' ) 
+		   ):
+			self.getlight()
+			self.setlight(int(self.light['brightness']) + incbright)
+			return
+		else:
+			print('Device Not Supported Yet')
 
 	def declight(self, decbright = 1):
-		self.getlight()
-		self.setlight(int(self.light['brightness']) - decbright)
-		return
+		if (	( self.model == 'FAN' and self.series == 'LSERIES' ) 
+			 or ( self.model == 'LIGHT' and self.series == 'HAIKU' ) 
+			 or ( self.model == 'FAN,HAIKU' and self.series == 'HSERIES' ) 
+		   ):
+			self.getlight()
+			self.setlight(int(self.light['brightness']) - decbright)
+			return
+		else:
+			print('Device Not Supported Yet')
 
 	def fanoff(self):
 	# Commands for LSERIES fan only
@@ -128,7 +143,10 @@ class SenseMeFan:
 
 	def lightoff(self):
 	# Commands for LSERIES fan only
-		if ( self.model == 'FAN' and self.series == 'LSERIES' ):
+		if (	( self.model == 'FAN' and self.series == 'LSERIES' ) 
+			 or ( self.model == 'LIGHT' and self.series == 'HAIKU' ) 
+			 or ( self.model == 'FAN,HAIKU' and self.series == 'HSERIES' ) 
+		   ):
 			self.__sendcommand__('<%s;LIGHT;PWR;OFF>' % self.name)
 			return
 		else:
@@ -136,20 +154,29 @@ class SenseMeFan:
 
 	def lighton(self):
 	# Commands for LSERIES fan only
-		if ( self.model == 'FAN' and self.series == 'LSERIES' ):
+		if (	( self.model == 'FAN' and self.series == 'LSERIES' ) 
+			 or ( self.model == 'LIGHT' and self.series == 'HAIKU' ) 
+			 or ( self.model == 'FAN,HAIKU' and self.series == 'HSERIES' ) 
+		   ):
 			self.__sendcommand__('<%s;LIGHT;PWR;ON>' % self.name)
 			return
 		else:
 			print('Device Not Supported Yet')
 
 	def lighttoggle(self):
-		self.getlight()
-		if self.light['status'] == 'ON':
-			self.lightoff()
-			return 'OFF'
+		if (	( self.model == 'FAN' and self.series == 'LSERIES' ) 
+			 or ( self.model == 'LIGHT' and self.series == 'HAIKU' ) 
+			 or ( self.model == 'FAN,HAIKU' and self.series == 'HSERIES' ) 
+		   ):
+			self.getlight()
+			if self.light['status'] == 'ON':
+				self.lightoff()
+				return 'OFF'
+			else:
+				self.lighton()
+				return 'ON'
 		else:
-			self.lighton()
-			return 'ON'
+			print('Device Not Supported Yet')
 
 	def getlight(self):
 	# Commands for LSERIES fan only 

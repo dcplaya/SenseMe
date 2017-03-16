@@ -18,7 +18,7 @@ function deviceStatusUpdateStart(name, ip, model, series, mac) {
     window.refreshIntervalID = window.setInterval(function() {
         socket.emit("devicestatus", client_message);
     //console.log("[x] Sent: " + client_message);
-    }, 5000);
+    }, 1000);
     
     //Once row is selected, change the onclick values of the device control to send the clicked device properly
     document.getElementById("deviceLightToggle").setAttribute('onclick', 'deviceLightToggle("' + name +'", "' + ip + '", "' + model + '", "' + series + '", "' + mac + '")');
@@ -34,13 +34,13 @@ function deviceStatusUpdateStart(name, ip, model, series, mac) {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //These functions will be run whenever a device control link is clicked
 // Standard JSON format to control devices will be
-// {MAC: mac, Model: model, Series: series, Light: { Power: on/off/toggle, Level: 0-10, Hue: ?? }, Fan: { Power: on/off/toggle, Speed: 0-10 }}
+// {MAC: mac, Model: model, Series: series, Light: { Power: on/off/toggle, Brightness: 0-16/INCREASE/DECREASE, Hue: ?? }, Fan: { Power: on/off/toggle, Speed: 0-7/INCREASE/DECREASE }}
 
 function deviceLightToggle(name, ip, model, series, mac) {
 
     // Standard JSON format to control devices will be
-    // {MAC: mac, Model: model, Series: series, Light: { Power: on/off/toggle, Level: 0-10, Hue: ?? }, Fan: { Power: on/off/toggle, Speed: 0-10 }}
-    client_message = JSON.stringify('{"MAC":"' + mac + '","Model":"' + model + '","Series":"' + series + '","Light": {"Power":"TOGGLE", "Level":"10", "Hue":"0" }' + ',"Fan": {"Power":"OFF", "Speed":"0"' + '}');
+    // {MAC: mac, Model: model, Series: series, Light: { Power: on/off/toggle, Brightness: 0-16/INCREASE/DECREASE, Hue: ?? }, Fan: { Power: on/off/toggle, Speed: 0-7/INCREASE/DECREASE }}
+    client_message = JSON.stringify('{"Name":"' + name + '","IP":"' + ip + '","MAC":"' + mac + '","Model":"' + model + '","Series":"' + series + '","Light": {"Power":"TOGGLE", "Brightness":"", "Hue":"" }' + ',"Fan": {"Power":"OFF", "Speed":"0"' + '}}');
     console.log("Device Light On String: ", client_message);
     // Send request
     socket.emit("devicecontrol", client_message);
@@ -51,8 +51,8 @@ function deviceLightToggle(name, ip, model, series, mac) {
 function deviceLightOn(name, ip, model, series, mac) {
 
     // Standard JSON format to control devices will be
-    // {MAC: mac, Model: model, Series: series, Light: { Power: on/off/toggle, Level: 0-10, Hue: ?? }, Fan: { Power: on/off/toggle, Speed: 0-10 }}
-    client_message = JSON.stringify('{"MAC":"' + mac + '","Model":"' + model + '","Series":"' + series + '","Light": {"Power":"ON", "Level":"10", "Hue":"0" }' + ',"Fan": {"Power":"OFF", "Speed":"0"' + '}');
+    // {MAC: mac, Model: model, Series: series, Light: { Power: on/off/toggle, Brightness: 0-16/INCREASE/DECREASE, Hue: ?? }, Fan: { Power: on/off/toggle, Speed: 0-7/INCREASE/DECREASE }}
+    client_message = JSON.stringify('{"Name":"' + name + '","IP":"' + ip + '","MAC":"' + mac + '","Model":"' + model + '","Series":"' + series + '","Light": {"Power":"ON", "Brightness":"", "Hue":"" }' + ',"Fan": {"Power":"OFF", "Speed":"0"' + '}}');
     console.log("Device Light On String: ", client_message);
     // Send request
     socket.emit("devicecontrol", client_message);
@@ -63,8 +63,8 @@ function deviceLightOn(name, ip, model, series, mac) {
 function deviceLightOff(name, ip, model, series, mac) {
 
     // Standard JSON format to control devices will be
-    // {MAC: mac, Model: model, Series: series, Light: { Power: on/off/toggle, Level: 0-10, Hue: ?? }, Fan: { Power: on/off/toggle, Speed: 0-10 }}
-    client_message = JSON.stringify('{"MAC":"' + mac + '","Model":"' + model + '","Series":"' + series + '","Light": {"Power":"OFF", "Level":"10", "Hue":"0" }' + ',"Fan": {"Power":"OFF", "Speed":"0"' + '}');
+    // {MAC: mac, Model: model, Series: series, Light: { Power: on/off/toggle, Brightness: 0-16/INCREASE/DECREASE, Hue: ?? }, Fan: { Power: on/off/toggle, Speed: 0-7/INCREASE/DECREASE }}
+    client_message = JSON.stringify('{"Name":"' + name + '","IP":"' + ip + '","MAC":"' + mac + '","Model":"' + model + '","Series":"' + series + '","Light": {"Power":"OFF", "Brightness":"", "Hue":"" }' + ',"Fan": {"Power":"OFF", "Speed":"0"' + '}}');
     console.log("Device Light On String: ", client_message);
     // Send request
     socket.emit("devicecontrol", client_message);
@@ -75,9 +75,8 @@ function deviceLightOff(name, ip, model, series, mac) {
 function deviceLightIncrease(name, ip, model, series, mac) {
 
     // Standard JSON format to control devices will be
-    // {MAC: mac, Model: model, Series: series, Light: { Power: on/off/toggle, Level: 0-10, Hue: ?? }, Fan: { Power: on/off/toggle, Speed: 0-10 }}
-    //client_message = JSON.stringify('{"MAC":"' + mac + '","Model":"' + model + '","Series":"' + series + '","Light": {"Power":"OFF", "Level":"10", "Hue":"0" }' + ',"Fan": {"Power":"OFF", "Speed":"0"' + '}');
-    console.log("Not Yet Implemented");
+    // {MAC: mac, Model: model, Series: series, Light: { Power: on/off/toggle, Brightness: 0-16/INCREASE/DECREASE, Hue: ?? }, Fan: { Power: on/off/toggle, Speed: 0-7/INCREASE/DECREASE }}
+    client_message = JSON.stringify('{"Name":"' + name + '","IP":"' + ip + '","MAC":"' + mac + '","Model":"' + model + '","Series":"' + series + '","Light": {"Power":"", "Brightness":"INCREASE", "Hue":"" }' + ',"Fan": {"Power":"OFF", "Speed":"0"' + '}}');
     // Send request
     socket.emit("devicecontrol", client_message);
     
@@ -87,9 +86,8 @@ function deviceLightIncrease(name, ip, model, series, mac) {
 function deviceLightDecrease(name, ip, model, series, mac) {
 
     // Standard JSON format to control devices will be
-    // {MAC: mac, Model: model, Series: series, Light: { Power: on/off/toggle, Level: 0-10, Hue: ?? }, Fan: { Power: on/off/toggle, Speed: 0-10 }}
-    //client_message = JSON.stringify('{"MAC":"' + mac + '","Model":"' + model + '","Series":"' + series + '","Light": {"Power":"OFF", "Level":"10", "Hue":"0" }' + ',"Fan": {"Power":"OFF", "Speed":"0"' + '}');
-    console.log("Not Yet Implemented");
+    // {MAC: mac, Model: model, Series: series, Light: { Power: on/off/toggle, Brightness: 0-16/INCREASE/DECREASE, Hue: ?? }, Fan: { Power: on/off/toggle, Speed: 0-7/INCREASE/DECREASE }}
+    client_message = JSON.stringify('{"Name":"' + name + '","IP":"' + ip + '","MAC":"' + mac + '","Model":"' + model + '","Series":"' + series + '","Light": {"Power":"", "Brightness":"DECREASE", "Hue":"" }' + ',"Fan": {"Power":"OFF", "Speed":"0"' + '}}');
     // Send request
     socket.emit("devicecontrol", client_message);
     
