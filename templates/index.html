@@ -66,7 +66,7 @@
                                         deviceSeries = cellSeries.innerHTML;
                                         deviceMAC = cellMAC.innerHTML;
                                         console.log("Test");
-                                        row.setAttribute('onclick', 'saveSelectionOfDevice("' + deviceName +'", "' + deviceIP + '", "' + deviceModel + '", "' + deviceSeries + '", "' + deviceMAC + '")' );       // Sets the row onclick attribute to pass into the function to save the data
+                                        row.setAttribute('onclick', 'deviceClickedInTable("' + deviceName +'", "' + deviceIP + '", "' + deviceModel + '", "' + deviceSeries + '", "' + deviceMAC + '")' );       // Sets the row onclick attribute to pass into the function to save the data
                                     }
                                     document.getElementById("DeviceSelectionButton").innerHTML="Done Loading!";             // Changes button text while loading data   
                                 });
@@ -108,13 +108,23 @@
         </body>
 </html>
 <script type = "text/javascript" language = "javascript">
+
 //This function will be run when a user clicks on a row in the table
+function deviceClickedInTable(name, ip, model, series, mac) {
 
-function saveSelectionOfDevice(name, ip, model, series, mac) {
-    
+    // Start the status update request
+    deviceStatusUpdateStart(name, ip, model, series, mac);
+};
+
+// Start requesting device status updates and set the onClick for the links
+function deviceStatusUpdateStart(name, ip, model, series, mac) {
+
     client_message = JSON.stringify('{"Name":"' + name + '","IP":"' + ip + '","Model":"' + model + '","Series":"' + series + '","MAC":"' + mac + '"}');
-
-    window.setInterval(function() {
+    
+    window.clearInterval(window.refreshIntervalID);                             // Stops the previous setInterval so I dont spam status update requests
+    
+    // Sends the command every X seconds
+    window.refreshIntervalID = window.setInterval(function() {
         socket.emit("devicestatus", client_message);
     //console.log("[x] Sent: " + client_message);
     }, 5000);
@@ -126,7 +136,8 @@ function saveSelectionOfDevice(name, ip, model, series, mac) {
     document.getElementById("deviceLightIncrease").setAttribute('onclick', 'deviceLightIncrease("' + name +'", "' + ip + '", "' + model + '", "' + series + '", "' + mac + '")');
     document.getElementById("deviceLightDecrease").setAttribute('onclick', 'deviceLightDecrease("' + name +'", "' + ip + '", "' + model + '", "' + series + '", "' + mac + '")');
    
-   //Still need to do Fan controls here     
+   // Return refreshID so I can kill it later on properly
+   return refreshIntervalID;  
 };
 </script>
 
@@ -204,6 +215,9 @@ function deviceLightDecrease(name, ip, model, series, mac) {
 WEB_SOCKET_SWF_LOCATION = "/static/WebSocketMain.swf";
 WEB_SOCKET_DEBUG = true;
 socket = io.connect('http://' + document.domain + ':' + location.port);
+
+// Used to stop the previous setInterval so I am not spamming the devices
+var refreshIntervalID;
 
 function displayStatus() {
     socket.on('devicestatus', function(message) {
