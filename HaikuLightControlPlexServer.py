@@ -75,25 +75,7 @@ def index():
 def show_devices():
 	
 	# SmartHome class
-	home = SmartHome()
-		
-	#===========================================================================
-	# 1) Get new list of devices
-	# 2) Check for duplicates
-	# 3) For each non-dupe, insert into table
-	# 4) Fetch all rows
-	# 5) Return all rows
-	#===========================================================================
-	for key in home.HaikuDevices:
-		name = home.HaikuDevices[key]["Name"]
-		mac = home.HaikuDevices[key]["MAC"]
-		ip = home.HaikuDevices[key]["IP"]
-		model = home.HaikuDevices[key]["Model"]
-		series = home.HaikuDevices[key]["Series"]
-		#Now update database
-		haiku_database.update_device_table(db, "haiku_devices", name, mac, ip, model, series, "Not Implemented Yet")
-	
-	
+	home = SmartHome()	
 	# Convert list to JSON so its easier to parse on the webpage
 	return jsonify(home.HaikuDevices)
 
@@ -310,13 +292,35 @@ def devicecontrol(message):
 # End devicecontrol websocket code
 #===============================================================================
 
+@socketio.on('databaseupdatedevices')
+def databaseupdatedevices(message):
+	log.debug("[x] Received\t: " + message)
+	json_data = json.loads(message.decode('string-escape').strip('"'))			#Strips out the bad stuff from the string before cnoverting it to JSON object
+	log.debug("Device Status JSON Data: ", json_data)
+	command = json_data['Command']
+	if command == "update":
+		home = SmartHome()
+		
+		#===========================================================================
+		# 1) Get new list of devices
+		# 2) Check for duplicates
+		# 3) For each non-dupe, insert into table
+		# 4) Fetch all rows
+		# 5) Return all rows
+		#===========================================================================
+		for key in home.HaikuDevices:
+			name = home.HaikuDevices[key]["Name"]
+			mac = home.HaikuDevices[key]["MAC"]
+			ip = home.HaikuDevices[key]["IP"]
+			model = home.HaikuDevices[key]["Model"]
+			series = home.HaikuDevices[key]["Series"]
+			#Now update database
+			haiku_database.update_device_table(db, "haiku_devices", name, mac, ip, model, series, "Not Implemented Yet")
+	else:
+		log.debug("Invalid update command")
+		
 #===============================================================================
-# @socketio.on('findnewdevices')
-# def findnewdevices(message):
-# 	
-# #===============================================================================
-# # End findnewdevices websocket code
-# #===============================================================================
+# End findnewdevices websocket code
 #===============================================================================
 	
 if __name__ == '__main__':
