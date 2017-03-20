@@ -51,13 +51,13 @@ class SenseMeDiscovery:
         if not socket_data:
             # Format a empty dictionary
             self.name = self.mac = self.model = self.series = self.ip = None
-            SenseMeDiscovery.device_list[self.name] = self.name
-            SenseMeDiscovery.device_list[self.name] = {}                                                # Needed to initalize a new dict inside of a dict
-            SenseMeDiscovery.device_list[self.name]["MAC"] = self.mac
-            SenseMeDiscovery.device_list[self.name]["Model"] = self.model
-            SenseMeDiscovery.device_list[self.name]["Series"] = self.series
-            SenseMeDiscovery.device_list[self.name]["IP"] = self.ip
-            SenseMeDiscovery.device_list[self.name]["Name"] = self.name
+            self.device_list[self.name] = self.name
+            self.device_list[self.name] = {}                                                # Needed to initalize a new dict inside of a dict
+            self.device_list[self.name]["MAC"] = self.mac
+            self.device_list[self.name]["Model"] = self.model
+            self.device_list[self.name]["Series"] = self.series
+            self.device_list[self.name]["IP"] = self.ip
+            self.device_list[self.name]["Name"] = self.name
             p.close()    # Closes the open socket
             pass
         else:
@@ -74,13 +74,13 @@ class SenseMeDiscovery:
                 self.ip = m[1][0]                                                          # Pull the IP of the device from the 2nd half of the response
             
                 # Start storing the info into a dict
-                SenseMeDiscovery.device_list[self.name] = self.name
-                SenseMeDiscovery.device_list[self.name] = {}                                                # Needed to initalize a new dict inside of a dict
-                SenseMeDiscovery.device_list[self.name]["MAC"] = self.mac
-                SenseMeDiscovery.device_list[self.name]["Model"] = self.model
-                SenseMeDiscovery.device_list[self.name]["Series"] = self.series
-                SenseMeDiscovery.device_list[self.name]["IP"] = self.ip
-                SenseMeDiscovery.device_list[self.name]["Name"] = self.name
+                self.device_list[self.name] = self.name
+                self.device_list[self.name] = {}                                                # Needed to initalize a new dict inside of a dict
+                self.device_list[self.name]["MAC"] = self.mac
+                self.device_list[self.name]["Model"] = self.model
+                self.device_list[self.name]["Series"] = self.series
+                self.device_list[self.name]["IP"] = self.ip
+                self.device_list[self.name]["Name"] = self.name
             # Store all the data in a list
             p.close()    # Closes the open socket
             #print('ip: ' + self.ip)
@@ -90,5 +90,5 @@ class SenseMeDiscovery:
    
     def get_device_list(self):
         # Returns a dictionary of all devices detected
-        return SenseMeDiscovery.device_list
+        return self.device_list
     
