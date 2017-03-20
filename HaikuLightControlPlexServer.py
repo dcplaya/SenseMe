@@ -74,10 +74,15 @@ def index():
 @app.route('/getdevicelist', methods=['GET', 'POST'])
 def show_devices():
 	
-	# SmartHome class
-	home = SmartHome()	
+	# 1) Pull device list from the database
+	# 2) Format it as JSON
+	# 3) Return JSON list
+	
+	# Query database for list of devices
+	listOfDevices = haiku_database.get_all_devices(db, "haiku_devices")
+
 	# Convert list to JSON so its easier to parse on the webpage
-	return jsonify(home.HaikuDevices)
+	return listOfDevices
 
 @app.route('/api/add_message/<uuid>', methods=['GET', 'POST'])
 def add_message(uuid):
