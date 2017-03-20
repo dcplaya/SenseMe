@@ -153,6 +153,7 @@ class haiku_database:
             c = conn.cursor()
             c.execute('''UPDATE ''' + table_sql + ''' SET name = ?, ip = ?, model = ?, series = ?, notes = ? WHERE mac = ?''', (device_name, device_ip, device_model, device_series, device_notes, device_mac))
             conn.commit()
+            print("Devices Updated")
         except Error as e:
             print("Error Update Device: ", e)
                 
