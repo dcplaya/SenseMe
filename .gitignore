@@ -3,3 +3,4 @@ config.ini
 
 # File types never to commit to GIT
 *.pyc
+/haiku.db
