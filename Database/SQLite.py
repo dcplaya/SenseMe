@@ -3,7 +3,7 @@
 # Import SQLite
 import sqlite3
 from sqlite3 import Error
-import json
+from flask import jsonify
 
 class haiku_database:    
     
@@ -107,8 +107,8 @@ class haiku_database:
                 data[name]["Series"] = series
                 data[name]["IP"] = ip
                 data[name]["Name"] = name
-                
-            return json.dumps(data)         
+    
+            return jsonify(data)         
         except Error as e:
             print("Error Get All Devices: ", e)
           
