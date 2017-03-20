@@ -24,16 +24,18 @@ class SmartHome:
         # End If
 
         # Empty list if it has any data in it at all
-        if not ( len(self.SenseMeDevices) == 0 ):
-            #print 'Delete List Length Of: ', len(SmartHome.SenseMeDevices) 
-            del self.SenseMeDevices[:]
-            
-        # Trying to store a list of SenseMeFan devices....Not sure if this works   
-        for key in self.HaikuDevices:
-            #print 'List is empty, store objects'
-            #print SmartHome.HaikuDevices[key]
-            self.SenseMeDevices.append(SenseMeFan(self.HaikuDevices[key]["IP"], self.HaikuDevices[key]["Name"], self.HaikuDevices[key]["Model"], self.HaikuDevices[key]["Series"], self.HaikuDevices[key]["MAC"]))
-            
+        #=======================================================================
+        # if not ( len(self.SenseMeDevices) == 0 ):
+        #     #print 'Delete List Length Of: ', len(SmartHome.SenseMeDevices) 
+        #     del self.SenseMeDevices[:]
+        #     
+        # # Trying to store a list of SenseMeFan devices....Not sure if this works   
+        # for key in self.HaikuDevices:
+        #     #print 'List is empty, store objects'
+        #     #print SmartHome.HaikuDevices[key]
+        #     self.SenseMeDevices.append(SenseMeFan(self.HaikuDevices[key]["IP"], self.HaikuDevices[key]["Name"], self.HaikuDevices[key]["Model"], self.HaikuDevices[key]["Series"], self.HaikuDevices[key]["MAC"]))
+        #     
+        #=======================================================================
         #=======================================================================
         # # Prints the state of each item in the list    
         # for x in SmartHome.SenseMeDevices:
