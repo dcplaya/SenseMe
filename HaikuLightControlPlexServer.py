@@ -35,6 +35,9 @@ if configFilePath.is_file():
 	config = configobj.ConfigObj('config.ini')
 else:
 	createConfig("config.ini")
+	
+# Import SQL code
+from Database.SQLite import haiku_database
 
 # Global values
 	# ip_addr = IP Address, name = Name given to device, model = model of device, series = series of device
@@ -73,6 +76,23 @@ def show_devices():
 	
 	# SmartHome class
 	home = SmartHome()
+		
+	#===========================================================================
+	# 1) Get new list of devices
+	# 2) Check for duplicates
+	# 3) For each non-dupe, insert into table
+	# 4) Fetch all rows
+	# 5) Return all rows
+	#===========================================================================
+	for key in home.HaikuDevices:
+		name = home.HaikuDevices[key]["Name"]
+		mac = home.HaikuDevices[key]["MAC"]
+		ip = home.HaikuDevices[key]["IP"]
+		model = home.HaikuDevices[key]["Model"]
+		series = home.HaikuDevices[key]["Series"]
+		#Now update database
+		haiku_database.update_device_table(db, "haiku_devices", name, mac, ip, model, series, "Not Implemented Yet")
+	
 	
 	# Convert list to JSON so its easier to parse on the webpage
 	return jsonify(home.HaikuDevices)
@@ -290,7 +310,26 @@ def devicecontrol(message):
 # End devicecontrol websocket code
 #===============================================================================
 
+#===============================================================================
+# @socketio.on('findnewdevices')
+# def findnewdevices(message):
+# 	
+# #===============================================================================
+# # End findnewdevices websocket code
+# #===============================================================================
+#===============================================================================
+	
 if __name__ == '__main__':
+	# Create a connection to the database (or create database if brand new)
+	database = (config['SQL_Path'])
+	haiku_database = haiku_database()
+	db = haiku_database.create_connection(database)
+
+	# Create Table
+	if haiku_database is not None:
+		#Create the table
+		haiku_database.create_table(db, "haiku_devices")
+
 	# Run the webserver
 	app.debug = False
 	socketio.run(app, port=8088, host= '0.0.0.0')
