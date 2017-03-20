@@ -13,4 +13,5 @@ def createConfig(path):
 	config['Room1']['Haiku']['Series'] = 'LSERIES'
 	# Non Haiku Options
 	config['debug'] = 'INFO'
+	config['SQL_Path'] = 'haiku.db'
 	config.write()
