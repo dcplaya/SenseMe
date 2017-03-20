@@ -13,7 +13,7 @@ class SmartHome:
     
     def __init__(self):
         discover = SenseMeDiscovery()                                           # Create a object of the SenseMeDiscovery class
-        SmartHome.HaikuDevices = discover.get_device_list()                     # Store the list of all devices
+        self.HaikuDevices = discover.get_device_list()                          # Store the list of all devices
         
         # What I need to do
         # Iterate over the HaikuDevices dictionary to make a new object
@@ -24,15 +24,15 @@ class SmartHome:
         # End If
 
         # Empty list if it has any data in it at all
-        if not ( len(SmartHome.SenseMeDevices) == 0 ):
+        if not ( len(self.SenseMeDevices) == 0 ):
             #print 'Delete List Length Of: ', len(SmartHome.SenseMeDevices) 
-            del SmartHome.SenseMeDevices[:]
+            del self.SenseMeDevices[:]
             
         # Trying to store a list of SenseMeFan devices....Not sure if this works   
-        for key in SmartHome.HaikuDevices:
+        for key in self.HaikuDevices:
             #print 'List is empty, store objects'
             #print SmartHome.HaikuDevices[key]
-            SmartHome.SenseMeDevices.append(SenseMeFan(SmartHome.HaikuDevices[key]["IP"], SmartHome.HaikuDevices[key]["Name"], SmartHome.HaikuDevices[key]["Model"], SmartHome.HaikuDevices[key]["Series"], SmartHome.HaikuDevices[key]["MAC"]))
+            self.SenseMeDevices.append(SenseMeFan(self.HaikuDevices[key]["IP"], self.HaikuDevices[key]["Name"], self.HaikuDevices[key]["Model"], self.HaikuDevices[key]["Series"], self.HaikuDevices[key]["MAC"]))
             
         #=======================================================================
         # # Prints the state of each item in the list    
