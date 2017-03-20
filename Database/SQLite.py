@@ -3,6 +3,7 @@
 # Import SQLite
 import sqlite3
 from sqlite3 import Error
+import json
 
 class haiku_database:    
     
@@ -80,14 +81,34 @@ class haiku_database:
         :param conn: connection object
         :param table_sql: target SQL table
         :return: dictionary of all devices in table
-        """   
+        """ 
+        # Make an empty dict
+        data = {}  
         try:
             c = conn.cursor()
             # Select the database first
-            c.execute('''SELECT * FROM %s''', (table_sql))
+            c.execute('''SELECT * FROM ''' + table_sql)
             # Grab each row and put it in a JSON
             for row in c:
-                print('{0} : {1}, {2}'.format(row[0], row[1], row[2]))          
+                #print('{0} : {1}, {2}, {3}, {4}, {5}'.format(row[0], row[1], row[2], row[3], row[4], row[5]))
+                # Seperate out all the data to make it easier for me later on
+                name = row[0]
+                mac = row[1]
+                ip = row[2]
+                model = row[3]
+                series = row[4]
+                notes = row[5]
+                
+                # Start storing it into a dict
+                data[name] = name
+                data[name] = {}                                                 # Initalize new dict inside of dict
+                data[name]["MAC"] = mac
+                data[name]["Model"] = model
+                data[name]["Series"] = series
+                data[name]["IP"] = ip
+                data[name]["Name"] = name
+                
+            return json.dumps(data)         
         except Error as e:
             print("Error Get All Devices: ", e)
           
