@@ -185,6 +185,72 @@ function databaseUpdateDevices() {
 //                          End database update functions
 ////////////////////////////////////////////////////////////////////////////////
 
+////////////////////////////////////////////////////////////////////////////////
+//                 Start database get list of devices functions
+//  This function will grab the list of devices at page load and whenever
+//  the list needs to be refreshed on screen
+////////////////////////////////////////////////////////////////////////////////
+function databaseGetListOfDevices() {
+    var table = document.getElementById("DeviceTable");                         // Selects which table by ID
+    var i = 0;                                                                  // Inializes the counter to 0   
+    // Clear table before refreshing it
+    for ( var q = table.rows.length - 1; q > 0; q--) {
+        table.deleteRow(q);
+    }
+    $.getJSON('getdevicelist', function(data) {
+        for ( var key in data ) {                                               // Starts filling in the rest of the table based on the JSON data
+            row = table.insertRow(i+1);
+            cellName = row.insertCell(i);
+            cellIP = row.insertCell(i+1);
+            cellModel = row.insertCell(i+2);
+            cellSeries = row.insertCell(i+3);
+            cellMAC = row.insertCell(i+4);
+            cellName.innerHTML = data[key]["Name"];
+            cellIP.innerHTML = data[key]["IP"];
+            cellModel.innerHTML = data[key]["Model"];
+            cellSeries.innerHTML = data[key]["Series"];
+            cellMAC.innerHTML = data[key]["MAC"];
+            //console.log(cellName.innerHTML);
+            deviceName = cellName.innerHTML;
+            deviceIP = cellIP.innerHTML;
+            deviceModel = cellModel.innerHTML;
+            deviceSeries = cellSeries.innerHTML;
+            deviceMAC = cellMAC.innerHTML;
+            row.setAttribute('onclick', 'deviceClickedInTable("' + deviceName +'", "' + deviceIP + '", "' + deviceModel + '", "' + deviceSeries + '", "' + deviceMAC + '")' );       // Sets the row onclick attribute to pass into the function to save the data
+        }         
+    });  
+};
+
+////////////////////////////////////////////////////////////////////////////////
+//                          End database get list of devices functions
+////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////
+//                 Start webpage table setup
+//  This fuction just sets up the device table
+////////////////////////////////////////////////////////////////////////////////
+function setupDeviceTable() {
+    var table = document.getElementById("DeviceTable");                             // Selects which table by ID
+    var i = 0;                                                                      // Inializes the counter to 0
+    var header = table.createTHead();                                               // Sets up the header of the columns
+    var row = header.insertRow(i);                                                  // Inserts header row
+    var cellName = row.insertCell(i);                                               // Inserts the 1st cell
+    var cellIP = row.insertCell(i+1);                                               // Inserts 2nd cell
+    var cellModel = row.insertCell(i+2);                                            // etc
+    var cellSeries = row.insertCell(i+3);                   
+    var cellMAC = row.insertCell(i+4);
+    cellName.innerHTML = "<b>Name</b>";                                             // Makes the 1st row a bunch of bold text
+    cellIP.innerHTML = "<b>IP Address</b>";
+    cellModel.innerHTML = "<b>Model</b>";
+    cellSeries.innerHTML = "<b>Series</b>";
+    cellMAC.innerHTML = "<b>MAC Address</b>";
+    table.style.border = "thin solid black";
+    table.style.backgroundColor='#BCD4EC';                                                                  // Inializes the counter to 0
+};
+
+////////////////////////////////////////////////////////////////////////////////
+//                          End database get list of devices functions
+////////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // This section will be for javascript that constantly runs once page is loaded, such as device status
@@ -215,3 +281,14 @@ function displayStatus() {
 };
 
 window.onload = displayStatus;
+window.onload = setupDeviceTable();
+//window.onload = databaseGetListOfDevices();
+// Refresh the device list every 1 seconds
+window.setInterval(databaseGetListOfDevices, 1000);
+
+
+
+
+
+
+// END

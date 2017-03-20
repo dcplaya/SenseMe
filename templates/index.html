@@ -8,8 +8,6 @@
 				src = "https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 			<!-- Loads socketIO library from external source -->
 			<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
-			 <!-- Loads my external javascript library from external source -->
-            <script type="text/javascript" src="../static/javascript/deviceJavascriptCode.js"></script>
 		</head>
         <body>
             <p>
@@ -20,69 +18,10 @@
                 <button id="UpdateDatabase" type="button" class="dropbtn" onclick="databaseUpdateDevices()">Update Database</button>
                 <button id="DeviceSelectionButton" type="button" class="dropbtn" value="Refresh Device List">Refresh Device List</button>
                 <div id="DeviceListSelection" class="dropdown-content">
-                    <!-- list of all detected devices, try and do it dynamically -->
-                    <script type = "text/javascript" language = "javascript">
-                        $(document).ready(function() {                                                      // When page is ready to run javascript
-                            var table = document.getElementById("DeviceTable");                             // Selects which table by ID
-                            var i = 0;                                                                      // Inializes the counter to 0
-                            var header = table.createTHead();                                               // Sets up the header of the columns
-                            var row = header.insertRow(i);                                                  // Inserts header row
-                            var cellName = row.insertCell(i);                                               // Inserts the 1st cell
-                            var cellIP = row.insertCell(i+1);                                               // Inserts 2nd cell
-                            var cellModel = row.insertCell(i+2);                                            // etc
-                            var cellSeries = row.insertCell(i+3);                   
-                            var cellMAC = row.insertCell(i+4);
-                            cellName.innerHTML = "<b>Name</b>";                                             // Makes the 1st row a bunch of bold text
-                            cellIP.innerHTML = "<b>IP Address</b>";
-                            cellModel.innerHTML = "<b>Model</b>";
-                            cellSeries.innerHTML = "<b>Series</b>";
-                            cellMAC.innerHTML = "<b>MAC Address</b>";
-                            table.style.border = "thin solid black";
-                            table.style.backgroundColor='#BCD4EC';
-                            $("#DeviceSelectionButton").click(function(){                                   // Defines what button to look for on mouse click
-                                // Clear any data still left in table
-                                var table = document.getElementById("DeviceTable");
-                                for ( var i = table.rows.length - 1; i > 0; i-- ) {
-                                    table.deleteRow(i);
-                                }
-                                $('#deviceList').html('<p> Loading Data...' + '</p>');
-                                document.getElementById("DeviceSelectionButton").innerHTML="Loading...";            // Changes button text while loading data        
-                                $.getJSON('getdevicelist', function(data) {                                         // The function/webpage to run when button above is clicked
-
-
-                                    for ( var key in data ) {                                                       // Starts filling in the rest of the table based on the JSON data
-                                        row = table.insertRow(i+1);
-                                        cellName = row.insertCell(i);
-                                        cellIP = row.insertCell(i+1);
-                                        cellModel = row.insertCell(i+2);
-                                        cellSeries = row.insertCell(i+3);
-                                        cellMAC = row.insertCell(i+4);
-                                        cellName.innerHTML = data[key]["Name"];
-                                        cellIP.innerHTML = data[key]["IP"];
-                                        cellModel.innerHTML = data[key]["Model"];
-                                        cellSeries.innerHTML = data[key]["Series"];
-                                        cellMAC.innerHTML = data[key]["MAC"];
-                                        //console.log(cellName.innerHTML);
-                                        deviceName = cellName.innerHTML;
-                                        deviceIP = cellIP.innerHTML;
-                                        deviceModel = cellModel.innerHTML;
-                                        deviceSeries = cellSeries.innerHTML;
-                                        deviceMAC = cellMAC.innerHTML;
-                                        console.log("Test");
-                                        row.setAttribute('onclick', 'deviceClickedInTable("' + deviceName +'", "' + deviceIP + '", "' + deviceModel + '", "' + deviceSeries + '", "' + deviceMAC + '")' );       // Sets the row onclick attribute to pass into the function to save the data
-                                    }
-                                    document.getElementById("DeviceSelectionButton").innerHTML="Refresh Device List";             // Changes button text while loading data
-                                });
-                            });
-                        });
-                    </script>
                 </div>
             </div>
             <div class="deviceListTable">
-                <table id="DeviceTable">
-                <colgroup>
-                </colgroup>
-                </table>
+                <table id="DeviceTable"></table>
             </div>
             <p>Light<ul>
 				<li><a id="deviceLightToggle" href="javascript:void(0);">Toggle Light</a></li>
@@ -109,5 +48,7 @@
 			     </ul>
 			</div>
         </body>
+    <!-- Loads my external javascript library from external source -->
+    <script type="text/javascript" src="../static/javascript/deviceJavascriptCode.js"></script>
 </html>
 
